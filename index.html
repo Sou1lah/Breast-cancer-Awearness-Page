@@ -1,306 +1,1600 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Breast Cancer Awareness</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap">
-<style>
-:root{--bg:#FFF1F6;--ink:#351522;--muted:#70485A;--brand:#C04470;--tint:#FADCE8;--card:#FFFAFC;--line:#EDBFD0;--link:#9F2853;--ok:#0B6B3A;--okbg:#E3F5EA;--no:#9B1C1C;--nobg:#FDE8E8;--si-t:env(safe-area-inset-top,0px);--si-b:env(safe-area-inset-bottom,0px);--hh:52px;box-sizing:border-box;color-scheme:light}
-:root[data-theme="dark"]{--bg:#1C0E15;--ink:#F8E8EF;--muted:#D2AFC0;--tint:#2E1521;--card:#26121C;--line:#4A2436;--brand:#A93C65;--link:#FF9FC2;--ok:#7EE0A6;--okbg:#12301F;--no:#FF9B9B;--nobg:#3A1517;color-scheme:dark}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;overflow:hidden}
-body{font-family:'DM Sans',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:16px}
-a{color:var(--link)}
-h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif}
-/* scroll container */
-.snap{position:fixed;inset:0;height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-behavior:smooth;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-.snap.lock{overflow:hidden}
-.pg{height:100vh;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;overflow-y:auto;padding:calc(var(--si-t) + var(--hh) + 16px) 22px calc(var(--si-b) + 84px);background:var(--bg)}
-.pg.t{background:var(--tint)}
-.pg.b{background:var(--brand);color:#fff}
-.in{margin:auto 0;width:100%;max-width:860px;align-self:center}
-.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--link)}
-.b .eyebrow{color:#FFD3E4}
-h2{font-size:clamp(26px,4.6vw,44px);line-height:1.12;margin:8px 0 10px}
-.lead{font-size:clamp(15px,2vw,19px);color:var(--muted);margin:0 0 22px;max-width:620px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;color:var(--ink)}
-.card h3{margin:0 0 4px;font-size:20px}.card p{margin:0}
-.src{font-size:13px;color:var(--muted)}
-.num{font-family:'Fraunces',serif;font-size:clamp(34px,6vw,52px);font-weight:700;color:var(--link);line-height:1.1}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.brandcard{background:var(--brand);border-color:var(--brand);color:#fff}
-/* header */
-.top{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--brand);color:#fff;padding-top:var(--si-t)}
-.top div.r{height:var(--hh);display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 22px;font-weight:700;gap:10px}
-.controls{display:flex;align-items:center;gap:5px;font-size:13px}
-.controls button{font:inherit;font-weight:700;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.42);border-radius:999px;min-width:30px;height:30px;padding:0 7px;cursor:pointer}
-.controls button[aria-pressed="true"]{background:#fff;color:#8A0B3D}
-.controls #themeToggle{font-size:16px}
-.top .bar{height:3px;background:rgba(255,255,255,.25)}.top .bar i{display:block;height:100%;width:0;background:#fff;transition:width .5s}
-/* dots + next */
-.dots{position:fixed;right:6px;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 2px}
-[dir="rtl"] .dots{right:auto;left:10px}
-@media (min-width:600px){.pg{padding-right:70px;padding-left:40px}}
-@media (max-width:599px){.pg{padding-right:42px;padding-left:14px}.dots{right:3px;padding:5px 1px}.dots button{width:24px;height:23px}.dots button::after{width:7px;height:7px}[dir="rtl"] .pg{padding-right:14px;padding-left:42px}}
-.dots button{width:30px;height:26px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.dots button::after{content:"";width:9px;height:9px;border-radius:50%;border:2px solid var(--brand);transition:all .3s}
-.dots button.on::after{background:var(--brand);transform:scale(1.35)}
-.next{position:fixed;left:50%;bottom:calc(var(--si-b) + 14px);transform:translateX(-50%);z-index:20;width:52px;height:52px;border-radius:50%;border:2px solid var(--brand);background:var(--card);color:var(--brand);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .3s}
-.next svg{animation:bob 1.6s ease-in-out infinite}
-.next.hide{opacity:0;pointer-events:none}
-@keyframes bob{50%{transform:translateY(5px)}}
-/* intro */
-#intro{position:fixed;inset:0;z-index:100;background:var(--brand);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center;padding:24px;transition:transform 1s cubic-bezier(.76,0,.24,1)}
-#intro.leave{transform:translateY(-100%)}
-#intro .lg{position:relative;width:190px;height:190px;display:flex;align-items:center;justify-content:center}
-#intro .lg::before,#intro .lg::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.5);animation:ping 2.2s ease-out infinite}
-#intro .lg::after{animation-delay:1.1s}
-#intro svg{width:105px;overflow:visible}
-#intro path{stroke-dasharray:260;stroke-dashoffset:260;animation:draw 1.6s ease-out .3s forwards}
-#intro path+path{animation-delay:.6s}
-#intro h1{font-size:clamp(28px,6vw,44px);margin:0;animation:rise .9s ease-out 1.3s both}
-#intro small{letter-spacing:.2em;text-transform:uppercase;font-size:13px;opacity:.85;animation:rise .9s ease-out 1.7s both}
-#intro .pgb{width:150px;height:3px;background:rgba(255,255,255,.3);border-radius:3px;overflow:hidden}
-#intro .pgb i{display:block;height:100%;background:#fff;width:0;animation:fill 3.3s linear forwards}
-@keyframes draw{to{stroke-dashoffset:0}}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes fill{to{width:100%}}
-@keyframes ping{from{transform:scale(.9);opacity:1}to{transform:scale(1.25);opacity:0}}
-@keyframes float{50%{transform:translateY(-10px) rotate(2deg)}}
-/* page entrance */
-.a{opacity:0;transform:translateY(30px) scale(.98);transition:opacity .7s,transform .7s;transition-delay:calc(var(--i,0)*90ms)}
-.pg.act .a{opacity:1;transform:none}
-/* hero */
-.hero .in{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;max-width:640px}
-.hero h1{font-size:clamp(38px,9vw,72px);line-height:1.05;margin:0}
-.hero p{font-size:clamp(16px,2.4vw,20px);margin:0;color:#FFE8F1}
-.orb{width:clamp(110px,22vh,260px);aspect-ratio:1;border-radius:50%;background:#C9306A;display:flex;align-items:center;justify-content:center;position:relative}
-.orb::before,.orb::after{content:"";position:absolute;inset:-14px;border-radius:50%;border:2px solid rgba(255,255,255,.35);animation:ping 3.2s ease-out infinite}
-.orb::after{animation-delay:1.6s}
-.orb svg{width:50%;animation:float 5s ease-in-out infinite}
-.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 26px;border-radius:999px;font:inherit;font-weight:700;text-decoration:none;color:#8A0B3D;background:#fff;border:0;cursor:pointer}
-/* rows */
-.rows{display:grid;gap:10px}
-.row{display:flex;gap:14px;align-items:flex-start}
-.row>b{flex:none;width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif}
-.row h3{margin:0;font-size:18px}.row p{margin:2px 0 0;color:var(--muted);font-size:15px}
-/* accordion */
-.acc{width:100%;text-align:start;font:inherit;display:block;padding:0;background:var(--card);border:1px solid var(--line);border-radius:14px;color:var(--ink);cursor:pointer;margin-bottom:8px;transition:border-color .2s}
-.acc span{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:48px;padding:0 16px;font-weight:700}
-.acc span::after{content:"+";font-size:22px;color:var(--link);transition:transform .3s}
-.acc[aria-expanded="true"]{border-color:var(--brand)}.acc[aria-expanded="true"] span::after{transform:rotate(45deg)}
-.acc p{max-height:0;overflow:hidden;margin:0;padding:0 16px;color:var(--muted);font-size:15px;transition:max-height .4s,padding .4s}
-.acc[aria-expanded="true"] p{max-height:120px;padding:0 16px 14px}
-.warn{margin-top:10px;padding:14px 18px;border-radius:14px;background:var(--brand);color:#fff;font-size:15px}
-/* quiz */
-.quiz{background:var(--card);border:2px solid var(--brand);border-radius:22px;padding:22px}
-.qt{display:flex;justify-content:space-between;gap:12px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--link)}
-.quiz h3{font-size:clamp(19px,3vw,25px);margin:10px 0 14px;line-height:1.3}
-.opt{display:block;width:100%;text-align:start;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:10px;min-height:50px;cursor:pointer;transition:border-color .2s,transform .2s}
-.opt:hover:not(:disabled){border-color:var(--brand);transform:translateX(4px)}
-.opt:disabled{cursor:default}.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.no{border-color:var(--no);background:var(--nobg)}
-.fb{margin:6px 0 0;padding:12px 16px;border-radius:14px;background:var(--tint);font-size:15px;animation:rise .5s both}
-.dts{display:flex;gap:6px;margin-top:14px}.dts i{flex:1;height:6px;border-radius:6px;background:var(--line)}.dts i.d{background:var(--brand)}
-.qbtn{margin-top:12px;background:var(--brand);color:#fff;border:0;border-radius:999px;min-height:46px;padding:0 24px;font:inherit;font-weight:700;cursor:pointer}
-.score{font-family:'Fraunces',serif;font-size:54px;color:var(--link);line-height:1.1}
-.legal{margin-top:16px;font-size:13px;color:var(--muted)}
-:focus-visible{outline:3px solid #FFB300;outline-offset:3px}
-@media (max-height:720px){.lead{display:none}.pg{padding-top:calc(var(--si-t) + var(--hh) + 8px)}.card{padding:14px 16px}.hero .in{gap:10px}}
-@media (prefers-reduced-motion:reduce){#intro{display:none}*{animation:none!important;transition:none!important}.a{opacity:1;transform:none}.snap{scroll-behavior:auto}}
-/* v2 */
-@media (min-width:760px){.rows{grid-template-columns:1fr 1fr}.rows>.wrap{grid-column:1/-1}}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Breast Cancer Awareness</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap">
+  <style>
+    :root {
+      --bg: #FFF1F6;
+      --ink: #351522;
+      --muted: #70485A;
+      --brand: #C04470;
+      --tint: #FADCE8;
+      --card: #FFFAFC;
+      --line: #EDBFD0;
+      --link: #9F2853;
+      --ok: #0B6B3A;
+      --okbg: #E3F5EA;
+      --no: #9B1C1C;
+      --nobg: #FDE8E8;
+      --si-t: env(safe-area-inset-top, 0px);
+      --si-b: env(safe-area-inset-bottom, 0px);
+      --hh: 52px;
+      box-sizing: border-box;
+      color-scheme: light
+    }
 
-:root{--hl:#F7B6CE;--pk:#E0558F;--bl:#2F7FD1}:root[data-theme="dark"]{--hl:#7A2A4A;--pk:#FF7FB0;--bl:#6FB1FF}
-.in,.card,.cols>*{min-width:0}.card{overflow-wrap:anywhere}.cols{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}.num{font-size:clamp(26px,3.6vw,38px);white-space:nowrap;overflow-wrap:normal}
-.pg{padding-left:max(18px,env(safe-area-inset-left))}@media (max-width:599px){.pg{padding-right:44px}}
-.hl{font-weight:700;color:var(--ink);background:linear-gradient(transparent 58%,var(--hl) 58%);padding:0 2px;border-radius:2px}
-.brandcard .hl{color:#fff;background:linear-gradient(transparent 58%,rgba(255,255,255,.3) 58%)}
-.ic{flex:none;width:44px;height:44px;border-radius:14px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center}
-.ic svg,.lk svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.row>div{min-width:0}.row.wrap{flex-wrap:wrap}.card.row{padding:14px 16px}.sg{gap:10px}.sg .row p{font-size:14px}
-.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.lk{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;background:var(--tint);border:1px solid var(--line);color:var(--link);font-weight:700;font-size:14px;text-decoration:none}
-.lk svg{width:18px;height:18px}.lk:hover{background:var(--brand);color:#fff}
-.lr{display:flex;align-items:center;gap:14px;margin:8px 0}.lr p{font-size:15px}.wl{color:#fff;font-weight:700;font-size:13px}
-.ring{flex:none;width:84px;height:84px;transform:rotate(-90deg)}.ring circle{fill:none;stroke-width:11}.ring .bg{stroke:rgba(255,255,255,.25)}
-.ring .fg{stroke:#fff;stroke-linecap:round;stroke-dasharray:0 100;transition:stroke-dasharray 1.4s .3s}.pg.act .ring .fg{stroke-dasharray:41.3 100}
-.ring text{transform:rotate(90deg);transform-origin:50px 50px;fill:#fff;font:700 24px 'DM Sans',sans-serif;stroke:none}
-.pic{flex:1 1 100%;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:6px}
-.dg{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;flex:1 1 150px;max-width:240px}
-.dg i{aspect-ratio:1;border-radius:50%;background:var(--line);transform:scale(.4);transition:background .3s,transform .4s}
-.pg.act .dg i{background:var(--pk);transform:none}.pg.act .dg i.m{background:var(--bl);transform:scale(1.5)}
-.split{display:flex;gap:18px}.split small{display:block;font-weight:700;color:var(--muted)}.split .num{font-size:34px}.pc{font-weight:700;font-size:20px}
-.pk{color:var(--pk)}.bl{color:var(--bl)}
-.cols.sg{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.cols.sg>.card{flex:1 1 100%}
-@media (min-width:760px){.cols.sg>.card{flex:0 1 calc((100% - 20px)/3)}}
-</style>
+    :root[data-theme="dark"] {
+      --bg: #1C0E15;
+      --ink: #F8E8EF;
+      --muted: #D2AFC0;
+      --tint: #2E1521;
+      --card: #26121C;
+      --line: #4A2436;
+      --brand: #A93C65;
+      --link: #FF9FC2;
+      --ok: #7EE0A6;
+      --okbg: #12301F;
+      --no: #FF9B9B;
+      --nobg: #3A1517;
+      color-scheme: dark
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden
+    }
+
+    body {
+      font-family: 'DM Sans', Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+      font-size: 16px
+    }
+
+    a {
+      color: var(--link)
+    }
+
+    h1,
+    h2,
+    h3,
+    .serif {
+      font-family: 'Fraunces', Georgia, serif
+    }
+
+    /* scroll container */
+    .snap {
+      position: fixed;
+      inset: 0;
+      height: 100vh;
+      height: 100dvh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch
+    }
+
+    .snap.lock {
+      overflow: hidden
+    }
+
+    .pg {
+      height: 100vh;
+      height: 100dvh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: calc(var(--si-t) + var(--hh) + 16px) 22px calc(var(--si-b) + 84px);
+      background: var(--bg)
+    }
+
+    .pg.t {
+      background: var(--tint)
+    }
+
+    .pg.b {
+      background: var(--brand);
+      color: #fff
+    }
+
+    .in {
+      margin: auto 0;
+      width: 100%;
+      max-width: 860px;
+      align-self: center
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--link)
+    }
+
+    .b .eyebrow {
+      color: #FFD3E4
+    }
+
+    h2 {
+      font-size: clamp(26px, 4.6vw, 44px);
+      line-height: 1.12;
+      margin: 8px 0 10px
+    }
+
+    .lead {
+      font-size: clamp(15px, 2vw, 19px);
+      color: var(--muted);
+      margin: 0 0 22px;
+      max-width: 620px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      color: var(--ink)
+    }
+
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 20px
+    }
+
+    .card p {
+      margin: 0
+    }
+
+    .src {
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    .num {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(34px, 6vw, 52px);
+      font-weight: 700;
+      color: var(--link);
+      line-height: 1.1
+    }
+
+    .cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px
+    }
+
+    .brandcard {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff
+    }
+
+    /* header */
+    .top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: var(--brand);
+      color: #fff;
+      padding-top: var(--si-t)
+    }
+
+    .top div.r {
+      height: var(--hh);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px 0 22px;
+      font-weight: 700;
+      gap: 10px
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px
+    }
+
+    .controls button {
+      font: inherit;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .42);
+      border-radius: 999px;
+      min-width: 30px;
+      height: 30px;
+      padding: 0 7px;
+      cursor: pointer
+    }
+
+    .controls button[aria-pressed="true"] {
+      background: #fff;
+      color: #8A0B3D
+    }
+
+    .controls #themeToggle {
+      font-size: 16px
+    }
+
+    .top .bar {
+      height: 3px;
+      background: rgba(255, 255, 255, .25)
+    }
+
+    .top .bar i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: #fff;
+      transition: width .5s
+    }
+
+    /* dots + next */
+    .dots {
+      position: fixed;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 2px
+    }
+
+    [dir="rtl"] .dots {
+      right: auto;
+      left: 10px
+    }
+
+    @media (min-width:600px) {
+      .pg {
+        padding-right: 70px;
+        padding-left: 40px
+      }
+    }
+
+    @media (max-width:599px) {
+      .pg {
+        padding-right: 42px;
+        padding-left: 14px
+      }
+
+      .dots {
+        right: 3px;
+        padding: 5px 1px
+      }
+
+      .dots button {
+        width: 24px;
+        height: 23px
+      }
+
+      .dots button::after {
+        width: 7px;
+        height: 7px
+      }
+
+      [dir="rtl"] .pg {
+        padding-right: 14px;
+        padding-left: 42px
+      }
+    }
+
+    .dots button {
+      width: 30px;
+      height: 26px;
+      border: 0;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .dots button::after {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 2px solid var(--brand);
+      transition: all .3s
+    }
+
+    .dots button.on::after {
+      background: var(--brand);
+      transform: scale(1.35)
+    }
+
+    .next {
+      position: fixed;
+      left: 50%;
+      bottom: calc(var(--si-b) + 14px);
+      transform: translateX(-50%);
+      z-index: 20;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--brand);
+      background: var(--card);
+      color: var(--brand);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .3s
+    }
+
+    .next svg {
+      animation: bob 1.6s ease-in-out infinite
+    }
+
+    .next.hide {
+      opacity: 0;
+      pointer-events: none
+    }
+
+    @keyframes bob {
+      50% {
+        transform: translateY(5px)
+      }
+    }
+
+    /* intro */
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--brand);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      text-align: center;
+      padding: 24px;
+      transition: transform 1s cubic-bezier(.76, 0, .24, 1)
+    }
+
+    #intro.leave {
+      transform: translateY(-100%)
+    }
+
+    #intro .lg {
+      position: relative;
+      width: 190px;
+      height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    #intro .lg::before,
+    #intro .lg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .5);
+      animation: ping 2.2s ease-out infinite
+    }
+
+    #intro .lg::after {
+      animation-delay: 1.1s
+    }
+
+    #intro svg {
+      width: 105px;
+      overflow: visible
+    }
+
+    #intro path {
+      stroke-dasharray: 260;
+      stroke-dashoffset: 260;
+      animation: draw 1.6s ease-out .3s forwards
+    }
+
+    #intro path+path {
+      animation-delay: .6s
+    }
+
+    #intro h1 {
+      font-size: clamp(28px, 6vw, 44px);
+      margin: 0;
+      animation: rise .9s ease-out 1.3s both
+    }
+
+    #intro small {
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      font-size: 13px;
+      opacity: .85;
+      animation: rise .9s ease-out 1.7s both
+    }
+
+    #intro .pgb {
+      width: 150px;
+      height: 3px;
+      background: rgba(255, 255, 255, .3);
+      border-radius: 3px;
+      overflow: hidden
+    }
+
+    #intro .pgb i {
+      display: block;
+      height: 100%;
+      background: #fff;
+      width: 0;
+      animation: fill 3.3s linear forwards
+    }
+
+    @keyframes draw {
+      to {
+        stroke-dashoffset: 0
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(16px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @keyframes fill {
+      to {
+        width: 100%
+      }
+    }
+
+    @keyframes ping {
+      from {
+        transform: scale(.9);
+        opacity: 1
+      }
+
+      to {
+        transform: scale(1.25);
+        opacity: 0
+      }
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-10px) rotate(2deg)
+      }
+    }
+
+    /* page entrance */
+    .a {
+      opacity: 0;
+      transform: translateY(30px) scale(.98);
+      transition: opacity .7s, transform .7s;
+      transition-delay: calc(var(--i, 0)*90ms)
+    }
+
+    .pg.act .a {
+      opacity: 1;
+      transform: none
+    }
+
+    /* hero */
+    .hero .in {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+      max-width: 640px
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 9vw, 72px);
+      line-height: 1.05;
+      margin: 0
+    }
+
+    .hero p {
+      font-size: clamp(16px, 2.4vw, 20px);
+      margin: 0;
+      color: #FFE8F1
+    }
+
+    .orb {
+      width: clamp(110px, 22vh, 260px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #C9306A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative
+    }
+
+    .orb::before,
+    .orb::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .35);
+      animation: ping 3.2s ease-out infinite
+    }
+
+    .orb::after {
+      animation-delay: 1.6s
+    }
+
+    .orb svg {
+      width: 50%;
+      animation: float 5s ease-in-out infinite
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 0 26px;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      color: #8A0B3D;
+      background: #fff;
+      border: 0;
+      cursor: pointer
+    }
+
+    /* rows */
+    .rows {
+      display: grid;
+      gap: 10px
+    }
+
+    .row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start
+    }
+
+    .row>b {
+      flex: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif
+    }
+
+    .row h3 {
+      margin: 0;
+      font-size: 18px
+    }
+
+    .row p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 15px
+    }
+
+    /* accordion */
+    .acc {
+      width: 100%;
+      text-align: start;
+      font: inherit;
+      display: block;
+      padding: 0;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--ink);
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: border-color .2s
+    }
+
+    .acc span {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 16px;
+      font-weight: 700
+    }
+
+    .acc span::after {
+      content: "+";
+      font-size: 22px;
+      color: var(--link);
+      transition: transform .3s
+    }
+
+    .acc[aria-expanded="true"] {
+      border-color: var(--brand)
+    }
+
+    .acc[aria-expanded="true"] span::after {
+      transform: rotate(45deg)
+    }
+
+    .acc p {
+      max-height: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0 16px;
+      color: var(--muted);
+      font-size: 15px;
+      transition: max-height .4s, padding .4s
+    }
+
+    .acc[aria-expanded="true"] p {
+      max-height: 120px;
+      padding: 0 16px 14px
+    }
+
+    .warn {
+      margin-top: 10px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 15px
+    }
+
+    /* quiz */
+    .quiz {
+      background: var(--card);
+      border: 2px solid var(--brand);
+      border-radius: 22px;
+      padding: 22px
+    }
+
+    .qt {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--link)
+    }
+
+    .quiz h3 {
+      font-size: clamp(19px, 3vw, 25px);
+      margin: 10px 0 14px;
+      line-height: 1.3
+    }
+
+    .opt {
+      display: block;
+      width: 100%;
+      text-align: start;
+      font: inherit;
+      font-size: 16px;
+      color: var(--ink);
+      background: var(--bg);
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      min-height: 50px;
+      cursor: pointer;
+      transition: border-color .2s, transform .2s
+    }
+
+    .opt:hover:not(:disabled) {
+      border-color: var(--brand);
+      transform: translateX(4px)
+    }
+
+    .opt:disabled {
+      cursor: default
+    }
+
+    .opt.ok {
+      border-color: var(--ok);
+      background: var(--okbg)
+    }
+
+    .opt.no {
+      border-color: var(--no);
+      background: var(--nobg)
+    }
+
+    .fb {
+      margin: 6px 0 0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: var(--tint);
+      font-size: 15px;
+      animation: rise .5s both
+    }
+
+    .dts {
+      display: flex;
+      gap: 6px;
+      margin-top: 14px
+    }
+
+    .dts i {
+      flex: 1;
+      height: 6px;
+      border-radius: 6px;
+      background: var(--line)
+    }
+
+    .dts i.d {
+      background: var(--brand)
+    }
+
+    .qbtn {
+      margin-top: 12px;
+      background: var(--brand);
+      color: #fff;
+      border: 0;
+      border-radius: 999px;
+      min-height: 46px;
+      padding: 0 24px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .score {
+      font-family: 'Fraunces', serif;
+      font-size: 54px;
+      color: var(--link);
+      line-height: 1.1
+    }
+
+    .legal {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    :focus-visible {
+      outline: 3px solid #FFB300;
+      outline-offset: 3px
+    }
+
+    @media (max-height:720px) {
+      .lead {
+        display: none
+      }
+
+      .pg {
+        padding-top: calc(var(--si-t) + var(--hh) + 8px)
+      }
+
+      .card {
+        padding: 14px 16px
+      }
+
+      .hero .in {
+        gap: 10px
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      #intro {
+        display: none
+      }
+
+      * {
+        animation: none !important;
+        transition: none !important
+      }
+
+      .a {
+        opacity: 1;
+        transform: none
+      }
+
+      .snap {
+        scroll-behavior: auto
+      }
+    }
+
+    /* v2 */
+    @media (min-width:760px) {
+      .rows {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .rows>.wrap {
+        grid-column: 1/-1
+      }
+    }
+
+    :root {
+      --hl: #F7B6CE;
+      --pk: #E0558F;
+      --bl: #2F7FD1
+    }
+
+    :root[data-theme="dark"] {
+      --hl: #7A2A4A;
+      --pk: #FF7FB0;
+      --bl: #6FB1FF
+    }
+
+    .in,
+    .card,
+    .cols>* {
+      min-width: 0
+    }
+
+    .card {
+      overflow-wrap: anywhere
+    }
+
+    .cols {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr))
+    }
+
+    .num {
+      font-size: clamp(26px, 3.6vw, 38px);
+      white-space: nowrap;
+      overflow-wrap: normal
+    }
+
+    .pg {
+      padding-left: max(18px, env(safe-area-inset-left))
+    }
+
+    @media (max-width:599px) {
+      .pg {
+        padding-right: 44px
+      }
+    }
+
+    .hl {
+      font-weight: 700;
+      color: var(--ink);
+      background: linear-gradient(transparent 58%, var(--hl) 58%);
+      padding: 0 2px;
+      border-radius: 2px
+    }
+
+    .brandcard .hl {
+      color: #fff;
+      background: linear-gradient(transparent 58%, rgba(255, 255, 255, .3) 58%)
+    }
+
+    .ic {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--brand);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .ic svg,
+    .lk svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .row>div {
+      min-width: 0
+    }
+
+    .row.wrap {
+      flex-wrap: wrap
+    }
+
+    .card.row {
+      padding: 14px 16px
+    }
+
+    .sg {
+      gap: 10px
+    }
+
+    .sg .row p {
+      font-size: 14px
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px
+    }
+
+    .lk {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: var(--tint);
+      border: 1px solid var(--line);
+      color: var(--link);
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none
+    }
+
+    .lk svg {
+      width: 18px;
+      height: 18px
+    }
+
+    .lk:hover {
+      background: var(--brand);
+      color: #fff
+    }
+
+    .lr {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 8px 0
+    }
+
+    .lr p {
+      font-size: 15px
+    }
+
+    .wl {
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px
+    }
+
+    .ring {
+      flex: none;
+      width: 84px;
+      height: 84px;
+      transform: rotate(-90deg)
+    }
+
+    .ring circle {
+      fill: none;
+      stroke-width: 11
+    }
+
+    .ring .bg {
+      stroke: rgba(255, 255, 255, .25)
+    }
+
+    .ring .fg {
+      stroke: #fff;
+      stroke-linecap: round;
+      stroke-dasharray: 0 100;
+      transition: stroke-dasharray 1.4s .3s
+    }
+
+    .pg.act .ring .fg {
+      stroke-dasharray: 41.3 100
+    }
+
+    .ring text {
+      transform: rotate(90deg);
+      transform-origin: 50px 50px;
+      fill: #fff;
+      font: 700 24px 'DM Sans', sans-serif;
+      stroke: none
+    }
+
+    .pic {
+      flex: 1 1 100%;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 6px
+    }
+
+    .dg {
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      gap: 3px;
+      flex: 1 1 150px;
+      max-width: 240px
+    }
+
+    .dg i {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--line);
+      transform: scale(.4);
+      transition: background .3s, transform .4s
+    }
+
+    .pg.act .dg i {
+      background: var(--pk);
+      transform: none
+    }
+
+    .pg.act .dg i.m {
+      background: var(--bl);
+      transform: scale(1.5)
+    }
+
+    .split {
+      display: flex;
+      gap: 18px
+    }
+
+    .split small {
+      display: block;
+      font-weight: 700;
+      color: var(--muted)
+    }
+
+    .split .num {
+      font-size: 34px
+    }
+
+    .pc {
+      font-weight: 700;
+      font-size: 20px
+    }
+
+    .pk {
+      color: var(--pk)
+    }
+
+    .bl {
+      color: var(--bl)
+    }
+
+    .cols.sg {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px
+    }
+
+    .cols.sg>.card {
+      flex: 1 1 100%
+    }
+
+    @media (min-width:760px) {
+      .cols.sg>.card {
+        flex: 0 1 calc((100% - 20px)/3)
+      }
+    }
+  </style>
 </head>
+
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol><symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.5 6-6"/></symbol><symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></symbol><symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol><symbol id="i-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c3-3 5 3 10 0s7 3 10 0M2 16c3-3 5 3 10 0s7 3 10 0"/></symbol><symbol id="i-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r=".6"/></symbol><symbol id="i-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7s7 6.3 7 11.3a7 7 0 0 1-14 0c0-5 7-11.3 7-11.3z"/></symbol><symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18m-11 6 2 2 4-4"/></symbol><symbol id="i-steth" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a5 5 0 0 0 10 0V3M11 14v3a4 4 0 0 0 8 0v-2"/><circle cx="19" cy="13" r="2"/></symbol><symbol id="i-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 14l2 2 4-4"/></symbol><symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></symbol><symbol id="i-facebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol><symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" />
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="m9 12 2 2 4-4" />
+    </symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z" />
+      <path d="M2 21c0-3 1.9-5.5 6-6" />
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z" />
+    </symbol>
+    <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="3" />
+    </symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+    </symbol>
+    <symbol id="i-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M2 8c3-3 5 3 10 0s7 3 10 0M2 16c3-3 5 3 10 0s7 3 10 0" />
+    </symbol>
+    <symbol id="i-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r=".6" />
+    </symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M12 2.7s7 6.3 7 11.3a7 7 0 0 1-14 0c0-5 7-11.3 7-11.3z" />
+    </symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0 1 16 0" />
+    </symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" />
+      <path d="M16 2v4M8 2v4M3 10h18m-11 6 2 2 4-4" />
+    </symbol>
+    <symbol id="i-steth" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <path d="M6 3v6a5 5 0 0 0 10 0V3M11 14v3a4 4 0 0 0 8 0v-2" />
+      <circle cx="19" cy="13" r="2" />
+    </symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <rect x="8" y="2" width="8" height="4" rx="1" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 14l2 2 4-4" />
+    </symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z" />
+    </symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <path d="M17.5 6.5h.01" />
+    </symbol>
+  </svg>
 
-<div id="intro" role="presentation">
-<div class="lg"><svg viewBox="0 0 120 180" fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M60 24C22 24 22 74 60 100L88 164"/><path d="M60 24C98 24 98 74 60 100L32 164"/></svg></div>
-<h1>Breast Cancer Awareness</h1>
-<small>Pink October</small>
-<div class="pgb"><i></i></div>
-</div>
+  <div id="intro" role="presentation">
+    <div class="lg"><svg viewBox="0 0 120 180" fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M60 24C22 24 22 74 60 100L88 164" />
+        <path d="M60 24C98 24 98 74 60 100L32 164" />
+      </svg></div>
+    <h1>Breast Cancer Awareness</h1>
+    <small>Pink October</small>
+    <div class="pgb"><i></i></div>
+  </div>
 
-<header class="top"><div class="r"><span class="serif">Pink October</span><div class="controls"><button id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme">☾</button><button type="button" class="lang" data-lang="en" aria-pressed="true" aria-label="English">EN</button><button type="button" class="lang" data-lang="fr" aria-pressed="false" aria-label="Français">FR</button><button type="button" class="lang" data-lang="ar" aria-pressed="false" aria-label="العربية">ع</button></div></div><div class="bar"><i id="pbar"></i></div></header>
-<nav class="dots" id="dots" aria-label="Pages"></nav>
-<button class="next" id="next" aria-label="Next page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+  <header class="top">
+    <div class="r"><span class="serif">Pink October</span>
+      <div class="controls"><button id="themeToggle" type="button" aria-label="Switch to dark theme"
+          title="Switch theme">☾</button><button type="button" class="lang" data-lang="en" aria-pressed="true"
+          aria-label="English">EN</button><button type="button" class="lang" data-lang="fr" aria-pressed="false"
+          aria-label="Français">FR</button><button type="button" class="lang" data-lang="ar" aria-pressed="false"
+          aria-label="العربية">ع</button></div>
+    </div>
+    <div class="bar"><i id="pbar"></i></div>
+  </header>
+  <nav class="dots" id="dots" aria-label="Pages"></nav>
+  <button class="next" id="next" aria-label="Next page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 9l6 6 6-6" />
+    </svg></button>
 
-<main class="snap lock" id="snap" tabindex="0">
+  <main class="snap lock" id="snap" tabindex="0">
 
-<section class="pg b hero" data-t="Welcome"><div class="in">
-<div class="orb a"><svg viewBox="0 0 120 180" role="img" aria-label="Pink awareness ribbon" fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"><path d="M60 24C22 24 22 74 60 100L88 164"/><path d="M60 24C98 24 98 74 60 100L32 164"/></svg></div>
-<div class="eyebrow a">Breast cancer awareness</div>
-<h1 class="a">Awareness is the first step.</h1>
-<p class="a">Know the signs, understand screening, and talk to a professional about any change. Swipe up to learn, with quick quizzes along the way.</p>
-</div></section>
+    <section class="pg b hero" data-t="Welcome">
+      <div class="in">
+        <div class="orb a"><svg viewBox="0 0 120 180" role="img" aria-label="Pink awareness ribbon" fill="none"
+            stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M60 24C22 24 22 74 60 100L88 164" />
+            <path d="M60 24C98 24 98 74 60 100L32 164" />
+          </svg></div>
+        <div class="eyebrow a">Breast cancer awareness</div>
+        <h1 class="a">Awareness is the first step.</h1>
+        <p class="a">Know the signs, understand screening, and talk to a professional about any change. Swipe up to
+          learn, with quick quizzes along the way.</p>
+      </div>
+    </section>
 
-<section class="pg" data-t="Why it matters"><div class="in">
-<div class="eyebrow a">Why it matters</div>
-<h2 class="a">Breast cancer touches millions of families.</h2>
-<p class="lead a" data-h>Earlier action is linked to <b class="hl">better outcomes</b>.</p>
-<div class="cols">
-<div class="card a"><div class="num" data-to="2300000">2,300,000</div><p>women diagnosed worldwide in 2022</p><span class="src">Source: World Health Organization</span></div>
-<div class="card brandcard a"><h3>Your local picture</h3><div class="lr"><svg class="ring" viewBox="0 0 100 100" role="img" aria-label="41.3%"><circle class="bg" cx="50" cy="50" r="40"/><circle class="fg" cx="50" cy="50" r="40" pathLength="100"/><text x="50" y="57" text-anchor="middle">41%</text></svg><p data-h>Breast cancer is <b class="hl">41.3%</b> of all cancers in Algerian women (<b class="hl">14,601</b> new cases in 2022): the <b class="hl">most common</b>.</p></div><a class="wl" href="https://gco.iarc.who.int/media/globocan/factsheets/populations/12-algeria-fact-sheet.pdf" target="_blank" rel="noopener">GLOBOCAN 2022, Algeria fact sheet</a></div>
-<div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-heart"/></svg></span><div><h3>The good news</h3><p data-h>Found <b class="hl">early</b>, breast cancer is <b class="hl">more treatable</b>, with more options.</p><a href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer" target="_blank" rel="noopener">WHO fact sheet</a></div></div>
-</div></div></section>
-<section class="pg t" data-t="Understand"><div class="in">
-<div class="eyebrow a">01 Understand</div>
-<h2 class="a">What breast cancer is.</h2>
-<p class="lead a" data-h>Abnormal cells in breast tissue grow <b class="hl">out of control</b>.</p>
-<div class="rows">
-<div class="card row a wrap"><span class="ic"><svg aria-hidden="true"><use href="#i-users"/></svg></span><div><h3>Who can develop it</h3><p data-h><b class="hl">Anyone</b>, including <b class="hl">men</b>, although it is far more <b class="hl">common in women</b>.</p></div>
-<div class="pic"><div class="dg" id="dg" aria-hidden="true"></div><div class="split"><div><span class="num pk" data-to="99">99</span><span class="pc pk">%</span><small>Women</small></div><div><span class="num bl" data-to="1">1</span><span class="pc bl">%</span><small>Men</small></div></div></div>
-<span class="src">Source: <a href="https://gpnotebook.com/pages/uncategorised/breast-cancer-man" target="_blank" rel="noopener">GPnotebook</a></span></div>
-<div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><div><h3>Know your risk factors</h3><p data-h><b class="hl">Age</b>, <b class="hl">family history</b> and <b class="hl">inherited genes</b> help guide when to start checks. Knowing them lets you <b class="hl">plan ahead</b>.</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-leaf"/></svg></span><div><h3>Can risk be reduced?</h3><p data-h><b class="hl">Yes, often it can.</b> Staying <b class="hl">active</b>, keeping a <b class="hl">healthy weight</b> and <b class="hl">limiting alcohol</b> all help.</p><a href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer" target="_blank" rel="noopener">WHO fact sheet</a></div></div>
-</div></div></section>
-<section class="pg" data-t="Know the signs"><div class="in">
-<div class="eyebrow a">02 Know the signs</div>
-<h2 class="a">Five changes to take seriously.</h2>
-<p class="lead a">At a glance. This site cannot diagnose.</p>
-<div class="cols sg"><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-target"/></svg></span><div><h3>New lump or thickening</h3><p data-h>In the breast or armpit. Many lumps are <b class="hl">benign</b>, but <b class="hl">only a professional can tell</b>.</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-scale"/></svg></span><div><h3>Change in size or shape</h3><p data-h>One breast looks <b class="hl">different</b> from before. <b class="hl">Note when</b> you first saw it.</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-waves"/></svg></span><div><h3>Skin changes</h3><p data-h><b class="hl">Dimpling</b>, <b class="hl">redness</b>, or other unusual changes that <b class="hl">do not go away</b>.</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-circle"/></svg></span><div><h3>Nipple changes</h3><p data-h>A <b class="hl">newly inverted</b> nipple or other unusual change.</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-drop"/></svg></span><div><h3>Unusual discharge</h3><p data-h>Especially if <b class="hl">bloody</b>. <b class="hl">Do not ignore</b> discharge that is new or unexplained.</p></div></div></div>
-<div class="warn a" data-h><strong>Do not wait for pain.</strong> A new or persistent change should be assessed by a healthcare professional.</div>
-</div></section>
-<section class="pg t" data-t="Early detection"><div class="in">
-<div class="eyebrow a">03 Early detection</div>
-<h2 class="a">Know what to do.</h2>
-<p class="lead a">Four steps that make it a habit.</p>
-<div class="rows"><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-user"/></svg></span><div><h3>Know your body</h3><p data-h>Notice <b class="hl">new changes</b>. This does not replace screening.</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-calendar"/></svg></span><div><h3>Understand screening</h3><p data-h><b class="hl">Mammography</b> is for people <b class="hl">without symptoms</b>. Ages follow <b class="hl">local guidelines</b>. [ADD ALGERIAN GUIDELINE]</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-steth"/></svg></span><div><h3>Act on changes</h3><p data-h>A concerning change needs <b class="hl">assessment</b>, even below screening age.</p></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-clip"/></svg></span><div><h3>Prepare</h3><p data-h>Note the change, <b class="hl">when it started</b>, other symptoms, and your questions.</p></div></div></div>
-</div></section>
-<section class="pg t" data-t="Support"><div class="in">
-<div class="eyebrow a">Support and resources</div>
-<h2 class="a">You do not have to face it alone.</h2>
-<div class="cols"><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-heart"/></svg></span><div><h3>El Amel (CPMC), Algiers</h3><p>Algerian patient-support association: awareness, mobile screening and guidance.</p><div class="links"><a class="lk" href="https://www.uicc.org/membership/association-el-amel-daide-aux-personnes-atteintes-de-cancer/centre-pierre-et-marie" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-globe"/></svg>Profile</a><a class="lk" href="https://fr-fr.facebook.com/pages/category/Interest/Association-El-AMEL-CPMC-715566835252394/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-facebook"/></svg>Facebook</a></div></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-globe"/></svg></span><div><h3>World Health Organization</h3><p>Trusted facts on breast cancer.</p><div class="links"><a class="lk" href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-globe"/></svg>Website</a><a class="lk" href="https://www.facebook.com/WHO" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-facebook"/></svg>Facebook</a><a class="lk" href="https://www.instagram.com/who/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-insta"/></svg>Instagram</a></div></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><div><h3>UICC</h3><p>Global cancer-control community with breast cancer resources.</p><div class="links"><a class="lk" href="https://www.uicc.org/what-we-do/thematic-areas/breast-cancer" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-globe"/></svg>Website</a></div></div></div><div class="card row a"><span class="ic"><svg aria-hidden="true"><use href="#i-leaf"/></svg></span><div><h3>IARC</h3><p>Research behind the cancer statistics.</p><div class="links"><a class="lk" href="https://www.iarc.who.int/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-globe"/></svg>Website</a></div></div></div></div>
-<div class="legal a">[CAMPAIGN ORGANISER] | Reviewed by [REVIEWER]. General information only; it does not replace professional medical advice.</div>
-</div></section>
+    <section class="pg" data-t="Why it matters">
+      <div class="in">
+        <div class="eyebrow a">Why it matters</div>
+        <h2 class="a">Breast cancer touches millions of families.</h2>
+        <p class="lead a" data-h>Earlier action is linked to <b class="hl">better outcomes</b>.</p>
+        <div class="cols">
+          <div class="card a">
+            <div class="num" data-to="2300000">2,300,000</div>
+            <p>women diagnosed worldwide in 2022</p><span class="src">Source: World Health Organization</span>
+          </div>
+          <div class="card brandcard a">
+            <h3>Your local picture</h3>
+            <div class="lr"><svg class="ring" viewBox="0 0 100 100" role="img" aria-label="41.3%">
+                <circle class="bg" cx="50" cy="50" r="40" />
+                <circle class="fg" cx="50" cy="50" r="40" pathLength="100" /><text x="50" y="57"
+                  text-anchor="middle">41%</text>
+              </svg>
+              <p data-h>Breast cancer is <b class="hl">41.3%</b> of all cancers in Algerian women (<b
+                  class="hl">14,601</b> new cases in 2022): the <b class="hl">most common</b>.</p>
+            </div><a class="wl"
+              href="https://gco.iarc.who.int/media/globocan/factsheets/populations/12-algeria-fact-sheet.pdf"
+              target="_blank" rel="noopener">GLOBOCAN 2022, Algeria fact sheet</a>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-heart" />
+              </svg></span>
+            <div>
+              <h3>The good news</h3>
+              <p data-h>Found <b class="hl">early</b>, breast cancer is <b class="hl">more treatable</b>, with more
+                options.</p><a href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer" target="_blank"
+                rel="noopener">WHO fact sheet</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="pg t" data-t="Understand">
+      <div class="in">
+        <div class="eyebrow a">01 Understand</div>
+        <h2 class="a">What breast cancer is.</h2>
+        <p class="lead a" data-h>Abnormal cells in breast tissue grow <b class="hl">out of control</b>.</p>
+        <div class="rows">
+          <div class="card row a wrap"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-users" />
+              </svg></span>
+            <div>
+              <h3>Who can develop it</h3>
+              <p data-h><b class="hl">Anyone</b>, including <b class="hl">men</b>, although it is far more <b
+                  class="hl">common in women</b>.</p>
+            </div>
+            <div class="pic">
+              <div class="dg" id="dg" aria-hidden="true"></div>
+              <div class="split">
+                <div><span class="num pk" data-to="99">99</span><span class="pc pk">%</span><small>Women</small></div>
+                <div><span class="num bl" data-to="1">1</span><span class="pc bl">%</span><small>Men</small></div>
+              </div>
+            </div>
+            <span class="src">Source: <a href="https://gpnotebook.com/pages/uncategorised/breast-cancer-man"
+                target="_blank" rel="noopener">GPnotebook</a></span>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-shield" />
+              </svg></span>
+            <div>
+              <h3>Know your risk factors</h3>
+              <p data-h><b class="hl">Age</b>, <b class="hl">family history</b> and <b class="hl">inherited genes</b>
+                help guide when to start checks. Knowing them lets you <b class="hl">plan ahead</b>.</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-leaf" />
+              </svg></span>
+            <div>
+              <h3>Can risk be reduced?</h3>
+              <p data-h><b class="hl">Yes, often it can.</b> Staying <b class="hl">active</b>, keeping a <b
+                  class="hl">healthy weight</b> and <b class="hl">limiting alcohol</b> all help.</p><a
+                href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer" target="_blank" rel="noopener">WHO
+                fact sheet</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="pg" data-t="Know the signs">
+      <div class="in">
+        <div class="eyebrow a">02 Know the signs</div>
+        <h2 class="a">Five changes to take seriously.</h2>
+        <p class="lead a">At a glance. This site cannot diagnose.</p>
+        <div class="cols sg">
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-target" />
+              </svg></span>
+            <div>
+              <h3>New lump or thickening</h3>
+              <p data-h>In the breast or armpit. Many lumps are <b class="hl">benign</b>, but <b class="hl">only a
+                  professional can tell</b>.</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-scale" />
+              </svg></span>
+            <div>
+              <h3>Change in size or shape</h3>
+              <p data-h>One breast looks <b class="hl">different</b> from before. <b class="hl">Note when</b> you first
+                saw it.</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-waves" />
+              </svg></span>
+            <div>
+              <h3>Skin changes</h3>
+              <p data-h><b class="hl">Dimpling</b>, <b class="hl">redness</b>, or other unusual changes that <b
+                  class="hl">do not go away</b>.</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-circle" />
+              </svg></span>
+            <div>
+              <h3>Nipple changes</h3>
+              <p data-h>A <b class="hl">newly inverted</b> nipple or other unusual change.</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-drop" />
+              </svg></span>
+            <div>
+              <h3>Unusual discharge</h3>
+              <p data-h>Especially if <b class="hl">bloody</b>. <b class="hl">Do not ignore</b> discharge that is new or
+                unexplained.</p>
+            </div>
+          </div>
+        </div>
+        <div class="warn a" data-h><strong>Do not wait for pain.</strong> A new or persistent change should be assessed
+          by a healthcare professional.</div>
+      </div>
+    </section>
+    <section class="pg t" data-t="Early detection">
+      <div class="in">
+        <div class="eyebrow a">03 Early detection</div>
+        <h2 class="a">Know what to do.</h2>
+        <p class="lead a">Four steps that make it a habit.</p>
+        <div class="rows">
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-user" />
+              </svg></span>
+            <div>
+              <h3>Know your body</h3>
+              <p data-h>Notice <b class="hl">new changes</b>. This does not replace screening.</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-calendar" />
+              </svg></span>
+            <div>
+              <h3>Understand screening</h3>
+              <p data-h><b class="hl">Mammography</b> is for people <b class="hl">without symptoms</b>. Ages follow <b
+                  class="hl">local guidelines</b>. [ADD ALGERIAN GUIDELINE]</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-steth" />
+              </svg></span>
+            <div>
+              <h3>Act on changes</h3>
+              <p data-h>A concerning change needs <b class="hl">assessment</b>, even below screening age.</p>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-clip" />
+              </svg></span>
+            <div>
+              <h3>Prepare</h3>
+              <p data-h>Note the change, <b class="hl">when it started</b>, other symptoms, and your questions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="pg t" data-t="Support">
+      <div class="in">
+        <div class="eyebrow a">Support and resources</div>
+        <h2 class="a">You do not have to face it alone.</h2>
+        <div class="cols">
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-heart" />
+              </svg></span>
+            <div>
+              <h3>El Amel (CPMC), Algiers</h3>
+              <p>Algerian patient-support association: awareness, mobile screening and guidance.</p>
+              <div class="links"><a class="lk"
+                  href="https://www.uicc.org/membership/association-el-amel-daide-aux-personnes-atteintes-de-cancer/centre-pierre-et-marie"
+                  target="_blank" rel="noopener noreferrer"><svg aria-hidden="true">
+                    <use href="#i-globe" />
+                  </svg>Profile</a><a class="lk"
+                  href="https://fr-fr.facebook.com/pages/category/Interest/Association-El-AMEL-CPMC-715566835252394/"
+                  target="_blank" rel="noopener noreferrer"><svg aria-hidden="true">
+                    <use href="#i-facebook" />
+                  </svg>Facebook</a></div>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-globe" />
+              </svg></span>
+            <div>
+              <h3>World Health Organization</h3>
+              <p>Trusted facts on breast cancer.</p>
+              <div class="links"><a class="lk" href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer"
+                  target="_blank" rel="noopener noreferrer"><svg aria-hidden="true">
+                    <use href="#i-globe" />
+                  </svg>Website</a><a class="lk" href="https://www.facebook.com/WHO" target="_blank"
+                  rel="noopener noreferrer"><svg aria-hidden="true">
+                    <use href="#i-facebook" />
+                  </svg>Facebook</a><a class="lk" href="https://www.instagram.com/who/" target="_blank"
+                  rel="noopener noreferrer"><svg aria-hidden="true">
+                    <use href="#i-insta" />
+                  </svg>Instagram</a></div>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-shield" />
+              </svg></span>
+            <div>
+              <h3>UICC</h3>
+              <p>Global cancer-control community with breast cancer resources.</p>
+              <div class="links"><a class="lk" href="https://www.uicc.org/what-we-do/thematic-areas/breast-cancer"
+                  target="_blank" rel="noopener noreferrer"><svg aria-hidden="true">
+                    <use href="#i-globe" />
+                  </svg>Website</a></div>
+            </div>
+          </div>
+          <div class="card row a"><span class="ic"><svg aria-hidden="true">
+                <use href="#i-leaf" />
+              </svg></span>
+            <div>
+              <h3>IARC</h3>
+              <p>Research behind the cancer statistics.</p>
+              <div class="links"><a class="lk" href="https://www.iarc.who.int/" target="_blank"
+                  rel="noopener noreferrer"><svg aria-hidden="true">
+                    <use href="#i-globe" />
+                  </svg>Website</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="legal a">[CAMPAIGN ORGANISER] | Reviewed by [REVIEWER]. General information only; it does not
+          replace professional medical advice.</div>
+      </div>
+    </section>
 
-<section class="pg" data-t="Final quiz"><div class="in">
-<div class="eyebrow a">Test yourself</div>
-<h2 class="a" style="margin-bottom:14px">Six questions to lock it in.</h2>
-<div class="quiz a" id="full"></div>
-</div></section>
+    <section class="pg" data-t="Final quiz">
+      <div class="in">
+        <div class="eyebrow a">Test yourself</div>
+        <h2 class="a" style="margin-bottom:14px">Six questions to lock it in.</h2>
+        <div class="quiz a" id="full"></div>
+      </div>
+    </section>
 
-</main>
+  </main>
 
-<script>
-(function(){
-var D=document,B=D.body,S=D.getElementById('snap'),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-var P=[].slice.call(D.querySelectorAll('.pg')),N=P.length,cur=0,ready=false;
-/* stagger indices */
-P.forEach(function(p){p.querySelectorAll('.a').forEach(function(e,i){e.style.setProperty('--i',i)})});
-/* dots */
-var dots=D.getElementById('dots'),pb=D.getElementById('pbar'),nx=D.getElementById('next');
-P.forEach(function(p,i){var b=D.createElement('button');b.setAttribute('aria-label','Go to page '+(i+1)+': '+p.dataset.t);b.onclick=function(){go(i)};dots.appendChild(b)});
-function go(i){P[Math.max(0,Math.min(N-1,i))].scrollIntoView({behavior:reduce?'auto':'smooth'})}
-nx.onclick=function(){go(cur+1)};
-function setCur(i){cur=i;pb.style.width=((i+1)/N*100)+'%';[].forEach.call(dots.children,function(d,k){d.classList.toggle('on',k===i)});nx.classList.toggle('hide',i===N-1)}
-setCur(0);
-/* active page tracking: replay entrance animation */
-var io=new IntersectionObserver(function(es){es.forEach(function(e){var i=P.indexOf(e.target);if(e.isIntersecting){setCur(i);if(!ready)return;e.target.classList.add('act');var n=e.target.querySelectorAll('[data-to]');if(!reduce)n.forEach(count)}else{e.target.classList.remove('act')}})},{root:S,threshold:.55});
-P.forEach(function(p){io.observe(p)});
-function count(n){var to=+n.dataset.to,s=null;function f(ts){s=s||ts;var p=Math.min((ts-s)/1300,1);n.textContent=Math.round(to*(1-Math.pow(1-p,3))).toLocaleString('en-US');if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
-/* intro */
-var intro=D.getElementById('intro');
-function start(){ready=true;S.classList.remove('lock');P[cur].classList.add('act')}
-if(reduce){intro.remove();start()}else{setTimeout(function(){intro.classList.add('leave');setTimeout(start,400);setTimeout(function(){intro.remove()},1100)},3500)}
-var dg=D.getElementById('dg');for(var k=0;k<100;k++){var d=D.createElement('i');if(k===99)d.className='m';d.style.transitionDelay=(k*13)+'ms';dg.appendChild(d)}
-/* accordion */
-var acc=[].slice.call(D.querySelectorAll('.acc'));
-acc.forEach(function(b){b.onclick=function(){var o=b.getAttribute('aria-expanded')==='true';acc.forEach(function(x){x.setAttribute('aria-expanded','false')});b.setAttribute('aria-expanded',!o)}});
-/* language and theme */
-var language='en',translations={
-fr:{
-'Welcome':'Bienvenue','Women':'Femmes','Men':'Hommes','At a glance. This site cannot diagnose.':'En un coup d’œil. Ce site ne peut pas établir de diagnostic.','Why it matters':'Pourquoi c’est important','Understand':'Comprendre','Know the signs':'Reconnaître les signes','Early detection':'Détection précoce','Final quiz':'Quiz final','Support':'Soutien',
-'Breast cancer awareness':'Sensibilisation au cancer du sein','Awareness is the first step.':'La sensibilisation est le premier pas.','Know the signs, understand screening, and talk to a professional about any change. Swipe up to learn, with quick quizzes along the way.':'Reconnaissez les signes, comprenez le dépistage et parlez à un professionnel de tout changement. Faites défiler pour en savoir plus.','Why it matters':'Pourquoi c’est important','Breast cancer touches millions of families.':'Le cancer du sein touche des millions de familles.','Earlier action is linked to better outcomes.':'Une prise en charge précoce est associée à de meilleurs résultats.','women diagnosed worldwide in 2022':'femmes diagnostiquées dans le monde en 2022','Source: World Health Organization':'Source : Organisation mondiale de la Santé','Your local picture':'La situation locale','[ADD ALGERIAN STATISTIC AND SOURCE]':'[AJOUTER UNE STATISTIQUE ALGÉRIENNE ET SA SOURCE]','WHO fact sheet':'Fiche d’information de l’OMS',
-'01 Understand':'01 Comprendre','What breast cancer is.':'Qu’est-ce que le cancer du sein ?','Abnormal cells in breast tissue grow out of control.':'Des cellules anormales du sein se développent de façon incontrôlée.','Anyone, including men, although it is far more common in women.':'Tout le monde, y compris les hommes, peut être concerné, mais il est beaucoup plus fréquent chez les femmes.','Who can develop it':'Qui peut être concerné','Risk factors':'Facteurs de risque','Age, family history, inherited genetic variants, and other established factors.':'L’âge, les antécédents familiaux, les variants génétiques héréditaires et d’autres facteurs établis.','Can risk be reduced?':'Peut-on réduire le risque ?','Some risk factors can be changed, but not every case can be prevented.':'Certains facteurs de risque peuvent être modifiés, mais tous les cas ne peuvent pas être évités.',
-'02 Know the signs':'02 Reconnaître les signes','Five changes to take seriously.':'Cinq changements à prendre au sérieux.','Tap a sign for more. This site cannot diagnose.':'Touchez un signe pour en savoir plus. Ce site ne peut pas établir de diagnostic.','New lump or thickening':'Nouvelle masse ou épaississement','In the breast or armpit. Many lumps are benign, but only a professional can tell.':'Dans le sein ou l’aisselle. De nombreuses masses sont bénignes, mais seul un professionnel peut le déterminer.','Change in size or shape':'Changement de taille ou de forme','One breast looks different from before. Note when you first saw it.':'Un sein semble différent. Notez quand vous avez remarqué le changement.','Skin changes':'Changements de la peau','Dimpling, redness, or other unusual changes that do not go away.':'Creux, rougeur ou autre changement inhabituel qui persiste.','Nipple changes':'Changements du mamelon','A newly inverted nipple or other unusual change.':'Un mamelon récemment rétracté ou tout autre changement inhabituel.','Unusual discharge':'Écoulement inhabituel','Especially if bloody. Do not ignore discharge that is new or unexplained.':'En particulier s’il est sanglant. N’ignorez pas un écoulement nouveau ou inexpliqué.','Do not wait for pain.':'N’attendez pas d’avoir mal.','A new or persistent change should be assessed by a healthcare professional.':'Tout changement nouveau ou persistant doit être évalué par un professionnel de santé.',
-'03 Early detection':'03 Détection précoce','Know what to do.':'Sachez quoi faire.','Four steps that make it a habit.':'Quatre étapes à adopter.','Know your body':'Connaître son corps','Notice new changes. This does not replace screening.':'Repérez tout nouveau changement. Cela ne remplace pas le dépistage.','Understand screening':'Comprendre le dépistage','Mammography is for people without symptoms. Ages follow local guidelines. [ADD ALGERIAN GUIDELINE]':'La mammographie s’adresse aux personnes sans symptômes. Les âges suivent les recommandations locales. [AJOUTER LES RECOMMANDATIONS ALGÉRIENNES]','Act on changes':'Agir en cas de changement','A concerning change needs assessment, even below screening age.':'Un changement préoccupant doit être évalué, même avant l’âge du dépistage.','Prepare':'Se préparer','Note the change, when it started, other symptoms, and your questions.':'Notez le changement, son apparition, les autres symptômes et vos questions.',
-'Test yourself':'Testez vos connaissances','Six questions to lock it in.':'Six questions pour retenir l’essentiel.','Support and resources':'Soutien et ressources','You do not have to face it alone.':'Vous n’avez pas à traverser cela seul.','Breast cancer fact sheet':'Fiche d’information sur le cancer du sein','Local support in Algeria':'Soutien local en Algérie','[VERIFIED ORGANISATION, HOSPITAL OR HELPLINE]':'[ORGANISME, HÔPITAL OU NUMÉRO D’AIDE À VÉRIFIER]','[CAMPAIGN ORGANISER] | Reviewed by [REVIEWER]. General information only; it does not replace professional medical advice.':'[ORGANISATEUR DE LA CAMPAGNE] | Révisé par [RÉVISEUR]. Information générale uniquement ; elle ne remplace pas un avis médical professionnel.',
-'Next page':'Page suivante','Pages':'Pages','Go to page':'Aller à la page','Awareness quiz':'Quiz de sensibilisation','Breast Cancer Awareness':'Sensibilisation au cancer du sein','Switch to dark theme':'Passer au thème sombre','Switch to light theme':'Passer au thème clair'
-},
-ar:{
-'Welcome':'مرحبًا','Women':'النساء','Men':'الرجال','At a glance. This site cannot diagnose.':'نظرة سريعة. لا يمكن لهذا الموقع تشخيص الحالات.','Why it matters':'لماذا هذا مهم','Understand':'افهمي المرض','Know the signs':'تعرّفي على العلامات','Early detection':'الكشف المبكر','Final quiz':'الاختبار النهائي','Support':'الدعم',
-'Breast cancer awareness':'التوعية بسرطان الثدي','Awareness is the first step.':'الوعي هو الخطوة الأولى.','Know the signs, understand screening, and talk to a professional about any change. Swipe up to learn, with quick quizzes along the way.':'تعرّفي على العلامات وافهمي الفحوصات وتحدثي مع مختص بشأن أي تغير. مرّري للأعلى لمعرفة المزيد.','Breast cancer touches millions of families.':'يصيب سرطان الثدي ملايين العائلات.','Earlier action is linked to better outcomes.':'يرتبط التدخل المبكر بنتائج أفضل.','women diagnosed worldwide in 2022':'امرأة شُخّصت حول العالم في عام ٢٠٢٢','Source: World Health Organization':'المصدر: منظمة الصحة العالمية','Your local picture':'الوضع المحلي','[ADD ALGERIAN STATISTIC AND SOURCE]':'[أضيفوا إحصائية جزائرية ومصدرها]','WHO fact sheet':'صحيفة وقائع منظمة الصحة العالمية',
-'01 Understand':'٠١ افهمي المرض','What breast cancer is.':'ما هو سرطان الثدي؟','Abnormal cells in breast tissue grow out of control.':'تنمو خلايا غير طبيعية في أنسجة الثدي بشكل خارج عن السيطرة.','Anyone, including men, although it is far more common in women.':'قد يصيب أي شخص، بمن فيهم الرجال، لكنه أكثر شيوعًا لدى النساء.','Who can develop it':'من قد يُصاب به؟','Risk factors':'عوامل الخطر','Age, family history, inherited genetic variants, and other established factors.':'العمر والتاريخ العائلي والتغيرات الجينية الموروثة وعوامل أخرى معروفة.','Can risk be reduced?':'هل يمكن تقليل الخطر؟','Some risk factors can be changed, but not every case can be prevented.':'يمكن تغيير بعض عوامل الخطر، لكن لا يمكن الوقاية من جميع الحالات.',
-'02 Know the signs':'٠٢ تعرّفي على العلامات','Five changes to take seriously.':'خمسة تغيرات يجب أخذها بجدية.','Tap a sign for more. This site cannot diagnose.':'اضغطي على العلامة لمعرفة المزيد. لا يمكن لهذا الموقع تشخيص الحالات.','New lump or thickening':'كتلة أو سماكة جديدة','In the breast or armpit. Many lumps are benign, but only a professional can tell.':'في الثدي أو الإبط. كثير من الكتل حميد، لكن المختص وحده يستطيع تحديد ذلك.','Change in size or shape':'تغيّر في الحجم أو الشكل','One breast looks different from before. Note when you first saw it.':'يبدو أحد الثديين مختلفًا عما سبق. سجّلي وقت ملاحظتك للتغير.','Skin changes':'تغيرات الجلد','Dimpling, redness, or other unusual changes that do not go away.':'تغضّن أو احمرار أو تغير غير معتاد لا يزول.','Nipple changes':'تغيرات الحلمة','A newly inverted nipple or other unusual change.':'انكماش حديث للحلمة أو أي تغير غير معتاد آخر.','Unusual discharge':'إفرازات غير معتادة','Especially if bloody. Do not ignore discharge that is new or unexplained.':'خصوصًا إذا كانت دموية. لا تتجاهلي الإفرازات الجديدة أو غير المفسرة.','Do not wait for pain.':'لا تنتظري حتى تشعري بالألم.','A new or persistent change should be assessed by a healthcare professional.':'ينبغي أن يقيّم مختص صحي أي تغير جديد أو مستمر.',
-'03 Early detection':'٠٣ الكشف المبكر','Know what to do.':'اعرفي ما ينبغي فعله.','Four steps that make it a habit.':'أربع خطوات لتصبح عادة.','Know your body':'تعرّفي على جسمك','Notice new changes. This does not replace screening.':'انتبهي للتغيرات الجديدة. هذا لا يغني عن الفحوصات.','Understand screening':'افهمي الفحوصات','Mammography is for people without symptoms. Ages follow local guidelines. [ADD ALGERIAN GUIDELINE]':'يُجرى تصوير الثدي بالأشعة لمن لا تظهر لديهم أعراض. تُحدَّد الأعمار وفق الإرشادات المحلية. [أضيفوا الإرشادات الجزائرية]','Act on changes':'تصرّفي عند حدوث تغيرات','A concerning change needs assessment, even below screening age.':'يحتاج التغير المقلق إلى تقييم حتى قبل سن الفحص الدوري.','Prepare':'استعدّي','Note the change, when it started, other symptoms, and your questions.':'دوّني التغير ووقت بدايته والأعراض الأخرى وأسئلتك.',
-'Test yourself':'اختبري معلوماتك','Six questions to lock it in.':'ستة أسئلة لترسيخ المعلومات.','Support and resources':'الدعم والموارد','You do not have to face it alone.':'لستِ مضطرة لمواجهة ذلك وحدك.','Breast cancer fact sheet':'صحيفة وقائع عن سرطان الثدي','Local support in Algeria':'الدعم المحلي في الجزائر','[VERIFIED ORGANISATION, HOSPITAL OR HELPLINE]':'[اسم جهة أو مستشفى أو رقم مساعدة بعد التحقق]','[CAMPAIGN ORGANISER] | Reviewed by [REVIEWER]. General information only; it does not replace professional medical advice.':'[منظّم الحملة] | راجعه [المراجع]. معلومات عامة فقط ولا تغني عن المشورة الطبية المتخصصة.',
-'Next page':'الصفحة التالية','Pages':'الصفحات','Go to page':'انتقلي إلى الصفحة','Awareness quiz':'اختبار التوعية','Breast Cancer Awareness':'التوعية بسرطان الثدي','Switch to dark theme':'التبديل إلى المظهر الداكن','Switch to light theme':'التبديل إلى المظهر الفاتح'
-}},themeToggle=D.getElementById('themeToggle'),fullQuiz=D.getElementById('full');
-function t(value){return (translations[language]&&translations[language][value])||value}
-function applyLanguage(){
-language=D.querySelector('.lang[aria-pressed="true"]').dataset.lang;
-D.documentElement.lang=language;B.dir=language==='ar'?'rtl':'ltr';
-var walker=D.createTreeWalker(D.body,NodeFilter.SHOW_TEXT),node;
-while((node=walker.nextNode())){if(node.parentElement.closest('script,style,[data-h]'))continue;if(!node.__english)node.__english=node.nodeValue;var original=node.__english,trimmed=original.trim();node.nodeValue=original.replace(trimmed,t(trimmed))}
-P.forEach(function(p){p.dataset.t=p.dataset.englishTitle||p.dataset.t;if(!p.dataset.englishTitle)p.dataset.englishTitle=p.dataset.t;p.dataset.t=t(p.dataset.englishTitle)});
-D.querySelectorAll('[data-h]').forEach(function(e){if(!e.__h){e.__h=e.innerHTML;e.__x=e.textContent.trim()}var r=t(e.__x);if(r===e.__x)e.innerHTML=e.__h;else e.textContent=r});
-D.querySelectorAll('#dots button').forEach(function(button,i){button.setAttribute('aria-label',t('Go to page')+' '+(i+1)+': '+P[i].dataset.t)});
-D.querySelectorAll('.hero svg[aria-label]').forEach(function(svg){svg.setAttribute('aria-label',t('Breast cancer awareness'))});
-D.getElementById('dots').setAttribute('aria-label',t('Pages'));
-nx.setAttribute('aria-label',t('Next page'));
-var dark=D.documentElement.dataset.theme==='dark',themeLabel=dark?'Switch to light theme':'Switch to dark theme';
-themeToggle.setAttribute('aria-label',t(themeLabel));themeToggle.title=t(themeLabel);
-document.title=t('Breast Cancer Awareness');
-fullQuiz.innerHTML='';quiz(fullQuiz,Q,t('Awareness quiz'));
-}
-themeToggle.onclick=function(){var dark=D.documentElement.dataset.theme!=='dark';if(dark)D.documentElement.dataset.theme='dark';else delete D.documentElement.dataset.theme;themeToggle.textContent=dark?'☀':'☾';themeToggle.setAttribute('aria-label',t(dark?'Switch to light theme':'Switch to dark theme'));themeToggle.title=t(dark?'Switch to light theme':'Switch to dark theme')};
-D.querySelectorAll('.lang').forEach(function(button){button.onclick=function(){D.querySelectorAll('.lang').forEach(function(b){b.setAttribute('aria-pressed',String(b===button))});applyLanguage()}});
-/* quiz */
-var Q=[
-{q:{en:'Does every breast lump mean cancer?',fr:'Toute masse mammaire signifie-t-elle un cancer ?',ar:'هل تعني كل كتلة في الثدي وجود سرطان؟'},o:{en:['Yes, always','No, many are benign, but any new lump should be assessed'],fr:['Oui, toujours','Non, beaucoup sont bénignes, mais toute nouvelle masse doit être évaluée'],ar:['نعم، دائمًا','لا، كثير منها حميد، لكن يجب تقييم أي كتلة جديدة']},a:1,e:{en:'Many lumps are benign, but only a healthcare professional can tell.',fr:'De nombreuses masses sont bénignes, mais seul un professionnel de santé peut le déterminer.',ar:'كثير من الكتل حميد، لكن المختص الصحي وحده يستطيع تحديد ذلك.'}},
-{q:{en:'Can men develop breast cancer?',fr:'Les hommes peuvent-ils avoir un cancer du sein ?',ar:'هل يمكن أن يُصاب الرجال بسرطان الثدي؟'},o:{en:['No, never','Yes, although it is much less common'],fr:['Non, jamais','Oui, même si c’est beaucoup moins fréquent'],ar:['لا، أبدًا','نعم، لكنه أقل شيوعًا بكثير']},a:1,e:{en:'Anyone can develop it. It is far more common in women.',fr:'Tout le monde peut être concerné. Il est beaucoup plus fréquent chez les femmes.',ar:'قد يصيب أي شخص، لكنه أكثر شيوعًا لدى النساء.'}},
-{q:{en:'You notice a breast change but feel no pain. What should you do?',fr:'Vous remarquez un changement au sein sans douleur. Que faire ?',ar:'لاحظتِ تغيرًا في الثدي دون ألم. ماذا ينبغي أن تفعلي؟'},o:{en:['Wait until it hurts','Seek advice from a healthcare professional'],fr:['Attendre d’avoir mal','Demander conseil à un professionnel de santé'],ar:['انتظري حتى تشعري بالألم','اطلبي المشورة من مختص صحي']},a:1,e:{en:'Do not wait for pain. A new or persistent change should be assessed.',fr:'N’attendez pas d’avoir mal. Tout changement nouveau ou persistant doit être évalué.',ar:'لا تنتظري الألم. ينبغي تقييم أي تغير جديد أو مستمر.'}},
-{q:{en:'Screening mammography is mainly intended for people who...',fr:'La mammographie de dépistage s’adresse principalement aux personnes qui…',ar:'يهدف تصوير الثدي بالأشعة للفحص الدوري أساسًا إلى الأشخاص الذين…'},o:{en:['Already have symptoms','Have no symptoms'],fr:['Ont déjà des symptômes','N’ont pas de symptômes'],ar:['لديهم أعراض بالفعل','ليس لديهم أعراض']},a:1,e:{en:'Screening looks for cancer before symptoms appear. A new change needs assessment at any age.',fr:'Le dépistage recherche un cancer avant l’apparition de symptômes. Tout nouveau changement doit être évalué à tout âge.',ar:'يبحث الفحص عن السرطان قبل ظهور الأعراض. ويجب تقييم أي تغير جديد في أي عمر.'}},
-{q:{en:'Does a family history mean you will develop breast cancer?',fr:'Les antécédents familiaux signifient-ils que vous aurez un cancer du sein ?',ar:'هل يعني التاريخ العائلي أنك ستصابين بسرطان الثدي؟'},o:{en:['Yes, it is certain','No, it raises risk but is not a certainty'],fr:['Oui, c’est certain','Non, cela augmente le risque sans certitude'],ar:['نعم، هذا مؤكد','لا، فهو يزيد الخطر لكنه لا يجعله أمرًا مؤكدًا']},a:1,e:{en:'Family history is a risk factor, not a diagnosis.',fr:'Les antécédents familiaux sont un facteur de risque, pas un diagnostic.',ar:'التاريخ العائلي عامل خطر وليس تشخيصًا.'}},
-{q:{en:'Can every case of breast cancer be prevented?',fr:'Peut-on prévenir tous les cas de cancer du sein ?',ar:'هل يمكن الوقاية من جميع حالات سرطان الثدي؟'},o:{en:['Yes, with the right lifestyle','No, some risk factors cannot be changed'],fr:['Oui, avec un mode de vie adapté','Non, certains facteurs de risque ne peuvent pas être modifiés'],ar:['نعم، باتباع نمط الحياة المناسب','لا، لا يمكن تغيير بعض عوامل الخطر']},a:1,e:{en:'Age and inherited genetic variants cannot be changed.',fr:'L’âge et les variants génétiques héréditaires ne peuvent pas être modifiés.',ar:'لا يمكن تغيير العمر والتغيرات الجينية الموروثة.'}}];
-function quiz(el,items,label){
-var i=0,sc=0,multi=items.length>1;
-function head(r){return '<div class="qt"><span>'+label+'</span><span>'+r+'</span></div>'}
-function show(){
-var it=items[i];
-el.innerHTML=head(multi?(i+1)+' / '+items.length:'')+'<h3></h3><div class="os"></div><div aria-live="polite" class="fbk"></div>'+(multi?'<div class="dts">'+items.map(function(_,k){return '<i class="'+(k<i?'d':'')+'"></i>'}).join('')+'</div>':'');
-el.querySelector('h3').textContent=it.q[language];
-var os=el.querySelector('.os'),fb=el.querySelector('.fbk');
-it.o[language].forEach(function(text,k){var b=D.createElement('button');b.className='opt';b.textContent=text;b.onclick=function(){
-os.querySelectorAll('.opt').forEach(function(x,j){x.disabled=true;if(j===it.a)x.classList.add('ok')});
-var good=k===it.a;if(good)sc++;else b.classList.add('no');
-var messages={en:[good?'Correct. ':'Not quite. ',it.e.en],fr:[good?'Correct. ':'Pas tout à fait. ',it.e.fr],ar:[good?'إجابة صحيحة. ':'ليس تمامًا. ',it.e.ar]};
-fb.innerHTML='<p class="fb"><strong>'+messages[language][0]+'</strong></p>';fb.firstChild.append(messages[language][1]);
-if(multi||!good){var n=D.createElement('button');n.className='qbtn';n.textContent=i<items.length-1?(language==='fr'?'Question suivante':language==='ar'?'السؤال التالي':'Next question'):(multi?(language==='fr'?'Voir mon score':language==='ar'?'عرض نتيجتي':'See my score'):(language==='fr'?'Réessayer':language==='ar'?'حاولي مجددًا':'Try again'));n.onclick=function(){i++;if(i<items.length)show();else end()};fb.appendChild(n)}
-};os.appendChild(b)})}
-function end(){
-var result=language==='fr'?[sc===items.length?'Parfait. Partagez ce que vous avez appris avec un proche.':sc>=4?'Bravo ! Réessayez pour obtenir le score parfait.':'Bon début. Relisez les informations et réessayez.','Terminé','Réessayer']:language==='ar'?[sc===items.length?'ممتاز! شاركي ما تعلمته مع شخص تهتمين به.':sc>=4?'أحسنتِ! حاولي مجددًا لتحصلي على الدرجة الكاملة.':'بداية جيدة. راجعي المعلومات وحاولي مجددًا.','اكتمل','حاولي مجددًا']:[sc===items.length?'Perfect. Share what you learned with someone you care about.':sc>=4?'Well done. Try again to perfect it.':'A good start. Swipe back, review, and try again.','Complete','Try again'];
-el.innerHTML=head(result[1])+'<div class="score">'+sc+' / '+items.length+'</div><p>'+result[0]+'</p><button class="qbtn">'+result[2]+'</button>';
-el.querySelector('.qbtn').onclick=function(){i=0;sc=0;show()}}
-show()}
-/* Keep the quiz at the end and localize page content. */
-applyLanguage();
-})();
-</script>
+  <script>
+    (function () {
+      var D = document, B = D.body, S = D.getElementById('snap'), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var P = [].slice.call(D.querySelectorAll('.pg')), N = P.length, cur = 0, ready = false;
+      /* stagger indices */
+      P.forEach(function (p) {p.querySelectorAll('.a').forEach(function (e, i) {e.style.setProperty('--i', i)})});
+      /* dots */
+      var dots = D.getElementById('dots'), pb = D.getElementById('pbar'), nx = D.getElementById('next');
+      P.forEach(function (p, i) {var b = D.createElement('button'); b.setAttribute('aria-label', 'Go to page ' + (i + 1) + ': ' + p.dataset.t); b.onclick = function () {go(i)}; dots.appendChild(b)});
+      function go(i) {P[Math.max(0, Math.min(N - 1, i))].scrollIntoView({behavior: reduce ? 'auto' : 'smooth'})}
+      nx.onclick = function () {go(cur + 1)};
+      function setCur(i) {cur = i; pb.style.width = ((i + 1) / N * 100) + '%';[].forEach.call(dots.children, function (d, k) {d.classList.toggle('on', k === i)}); nx.classList.toggle('hide', i === N - 1)}
+      setCur(0);
+      /* active page tracking: replay entrance animation */
+      var io = new IntersectionObserver(function (es) {es.forEach(function (e) {var i = P.indexOf(e.target); if (e.isIntersecting) {setCur(i); if (!ready) return; e.target.classList.add('act'); var n = e.target.querySelectorAll('[data-to]'); if (!reduce) n.forEach(count)} else {e.target.classList.remove('act')} })}, {root: S, threshold: .55});
+      P.forEach(function (p) {io.observe(p)});
+      function count(n) {var to = +n.dataset.to, s = null; function f(ts) {s = s || ts; var p = Math.min((ts - s) / 1300, 1); n.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString('en-US'); if (p < 1) requestAnimationFrame(f)} requestAnimationFrame(f)}
+      /* intro */
+      var intro = D.getElementById('intro');
+      function start() {ready = true; S.classList.remove('lock'); P[cur].classList.add('act')}
+      if (reduce) {intro.remove(); start()} else {setTimeout(function () {intro.classList.add('leave'); setTimeout(start, 400); setTimeout(function () {intro.remove()}, 1100)}, 3500)}
+      var dg = D.getElementById('dg'); for (var k = 0; k < 100; k++) {var d = D.createElement('i'); if (k === 99) d.className = 'm'; d.style.transitionDelay = (k * 13) + 'ms'; dg.appendChild(d)}
+      /* accordion */
+      var acc = [].slice.call(D.querySelectorAll('.acc'));
+      acc.forEach(function (b) {b.onclick = function () {var o = b.getAttribute('aria-expanded') === 'true'; acc.forEach(function (x) {x.setAttribute('aria-expanded', 'false')}); b.setAttribute('aria-expanded', !o)}});
+      /* language and theme */
+      var language = 'en', translations = {
+        fr: {
+          'Welcome': 'Bienvenue', 'Women': 'Femmes', 'Men': 'Hommes', 'At a glance. This site cannot diagnose.': 'En un coup d’œil. Ce site ne peut pas établir de diagnostic.', 'Why it matters': 'Pourquoi c’est important', 'Understand': 'Comprendre', 'Know the signs': 'Reconnaître les signes', 'Early detection': 'Détection précoce', 'Final quiz': 'Quiz final', 'Support': 'Soutien',
+          'Breast cancer awareness': 'Sensibilisation au cancer du sein', 'Awareness is the first step.': 'La sensibilisation est le premier pas.', 'Know the signs, understand screening, and talk to a professional about any change. Swipe up to learn, with quick quizzes along the way.': 'Reconnaissez les signes, comprenez le dépistage et parlez à un professionnel de tout changement. Faites défiler pour en savoir plus.', 'Why it matters': 'Pourquoi c’est important', 'Breast cancer touches millions of families.': 'Le cancer du sein touche des millions de familles.', 'Earlier action is linked to better outcomes.': 'Une prise en charge précoce est associée à de meilleurs résultats.', 'women diagnosed worldwide in 2022': 'femmes diagnostiquées dans le monde en 2022', 'Source: World Health Organization': 'Source : Organisation mondiale de la Santé', 'Your local picture': 'La situation locale', '[ADD ALGERIAN STATISTIC AND SOURCE]': '[AJOUTER UNE STATISTIQUE ALGÉRIENNE ET SA SOURCE]', 'WHO fact sheet': 'Fiche d’information de l’OMS',
+          '01 Understand': '01 Comprendre', 'What breast cancer is.': 'Qu’est-ce que le cancer du sein ?', 'Abnormal cells in breast tissue grow out of control.': 'Des cellules anormales du sein se développent de façon incontrôlée.', 'Anyone, including men, although it is far more common in women.': 'Tout le monde, y compris les hommes, peut être concerné, mais il est beaucoup plus fréquent chez les femmes.', 'Who can develop it': 'Qui peut être concerné', 'Risk factors': 'Facteurs de risque', 'Age, family history, inherited genetic variants, and other established factors.': 'L’âge, les antécédents familiaux, les variants génétiques héréditaires et d’autres facteurs établis.', 'Can risk be reduced?': 'Peut-on réduire le risque ?', 'Some risk factors can be changed, but not every case can be prevented.': 'Certains facteurs de risque peuvent être modifiés, mais tous les cas ne peuvent pas être évités.',
+          '02 Know the signs': '02 Reconnaître les signes', 'Five changes to take seriously.': 'Cinq changements à prendre au sérieux.', 'Tap a sign for more. This site cannot diagnose.': 'Touchez un signe pour en savoir plus. Ce site ne peut pas établir de diagnostic.', 'New lump or thickening': 'Nouvelle masse ou épaississement', 'In the breast or armpit. Many lumps are benign, but only a professional can tell.': 'Dans le sein ou l’aisselle. De nombreuses masses sont bénignes, mais seul un professionnel peut le déterminer.', 'Change in size or shape': 'Changement de taille ou de forme', 'One breast looks different from before. Note when you first saw it.': 'Un sein semble différent. Notez quand vous avez remarqué le changement.', 'Skin changes': 'Changements de la peau', 'Dimpling, redness, or other unusual changes that do not go away.': 'Creux, rougeur ou autre changement inhabituel qui persiste.', 'Nipple changes': 'Changements du mamelon', 'A newly inverted nipple or other unusual change.': 'Un mamelon récemment rétracté ou tout autre changement inhabituel.', 'Unusual discharge': 'Écoulement inhabituel', 'Especially if bloody. Do not ignore discharge that is new or unexplained.': 'En particulier s’il est sanglant. N’ignorez pas un écoulement nouveau ou inexpliqué.', 'Do not wait for pain.': 'N’attendez pas d’avoir mal.', 'A new or persistent change should be assessed by a healthcare professional.': 'Tout changement nouveau ou persistant doit être évalué par un professionnel de santé.',
+          '03 Early detection': '03 Détection précoce', 'Know what to do.': 'Sachez quoi faire.', 'Four steps that make it a habit.': 'Quatre étapes à adopter.', 'Know your body': 'Connaître son corps', 'Notice new changes. This does not replace screening.': 'Repérez tout nouveau changement. Cela ne remplace pas le dépistage.', 'Understand screening': 'Comprendre le dépistage', 'Mammography is for people without symptoms. Ages follow local guidelines. [ADD ALGERIAN GUIDELINE]': 'La mammographie s’adresse aux personnes sans symptômes. Les âges suivent les recommandations locales. [AJOUTER LES RECOMMANDATIONS ALGÉRIENNES]', 'Act on changes': 'Agir en cas de changement', 'A concerning change needs assessment, even below screening age.': 'Un changement préoccupant doit être évalué, même avant l’âge du dépistage.', 'Prepare': 'Se préparer', 'Note the change, when it started, other symptoms, and your questions.': 'Notez le changement, son apparition, les autres symptômes et vos questions.',
+          'Test yourself': 'Testez vos connaissances', 'Six questions to lock it in.': 'Six questions pour retenir l’essentiel.', 'Support and resources': 'Soutien et ressources', 'You do not have to face it alone.': 'Vous n’avez pas à traverser cela seul.', 'Breast cancer fact sheet': 'Fiche d’information sur le cancer du sein', 'Local support in Algeria': 'Soutien local en Algérie', '[VERIFIED ORGANISATION, HOSPITAL OR HELPLINE]': '[ORGANISME, HÔPITAL OU NUMÉRO D’AIDE À VÉRIFIER]', '[CAMPAIGN ORGANISER] | Reviewed by [REVIEWER]. General information only; it does not replace professional medical advice.': '[ORGANISATEUR DE LA CAMPAGNE] | Révisé par [RÉVISEUR]. Information générale uniquement ; elle ne remplace pas un avis médical professionnel.',
+          'Next page': 'Page suivante', 'Pages': 'Pages', 'Go to page': 'Aller à la page', 'Awareness quiz': 'Quiz de sensibilisation', 'Breast Cancer Awareness': 'Sensibilisation au cancer du sein', 'Switch to dark theme': 'Passer au thème sombre', 'Switch to light theme': 'Passer au thème clair'
+        },
+        ar: {
+          'Welcome': 'مرحبًا', 'Women': 'النساء', 'Men': 'الرجال', 'At a glance. This site cannot diagnose.': 'نظرة سريعة. لا يمكن لهذا الموقع تشخيص الحالات.', 'Why it matters': 'لماذا هذا مهم', 'Understand': 'افهمي المرض', 'Know the signs': 'تعرّفي على العلامات', 'Early detection': 'الكشف المبكر', 'Final quiz': 'الاختبار النهائي', 'Support': 'الدعم',
+          'Breast cancer awareness': 'التوعية بسرطان الثدي', 'Awareness is the first step.': 'الوعي هو الخطوة الأولى.', 'Know the signs, understand screening, and talk to a professional about any change. Swipe up to learn, with quick quizzes along the way.': 'تعرّفي على العلامات وافهمي الفحوصات وتحدثي مع مختص بشأن أي تغير. مرّري للأعلى لمعرفة المزيد.', 'Breast cancer touches millions of families.': 'يصيب سرطان الثدي ملايين العائلات.', 'Earlier action is linked to better outcomes.': 'يرتبط التدخل المبكر بنتائج أفضل.', 'women diagnosed worldwide in 2022': 'امرأة شُخّصت حول العالم في عام ٢٠٢٢', 'Source: World Health Organization': 'المصدر: منظمة الصحة العالمية', 'Your local picture': 'الوضع المحلي', '[ADD ALGERIAN STATISTIC AND SOURCE]': '[أضيفوا إحصائية جزائرية ومصدرها]', 'WHO fact sheet': 'صحيفة وقائع منظمة الصحة العالمية',
+          '01 Understand': '٠١ افهمي المرض', 'What breast cancer is.': 'ما هو سرطان الثدي؟', 'Abnormal cells in breast tissue grow out of control.': 'تنمو خلايا غير طبيعية في أنسجة الثدي بشكل خارج عن السيطرة.', 'Anyone, including men, although it is far more common in women.': 'قد يصيب أي شخص، بمن فيهم الرجال، لكنه أكثر شيوعًا لدى النساء.', 'Who can develop it': 'من قد يُصاب به؟', 'Risk factors': 'عوامل الخطر', 'Age, family history, inherited genetic variants, and other established factors.': 'العمر والتاريخ العائلي والتغيرات الجينية الموروثة وعوامل أخرى معروفة.', 'Can risk be reduced?': 'هل يمكن تقليل الخطر؟', 'Some risk factors can be changed, but not every case can be prevented.': 'يمكن تغيير بعض عوامل الخطر، لكن لا يمكن الوقاية من جميع الحالات.',
+          '02 Know the signs': '٠٢ تعرّفي على العلامات', 'Five changes to take seriously.': 'خمسة تغيرات يجب أخذها بجدية.', 'Tap a sign for more. This site cannot diagnose.': 'اضغطي على العلامة لمعرفة المزيد. لا يمكن لهذا الموقع تشخيص الحالات.', 'New lump or thickening': 'كتلة أو سماكة جديدة', 'In the breast or armpit. Many lumps are benign, but only a professional can tell.': 'في الثدي أو الإبط. كثير من الكتل حميد، لكن المختص وحده يستطيع تحديد ذلك.', 'Change in size or shape': 'تغيّر في الحجم أو الشكل', 'One breast looks different from before. Note when you first saw it.': 'يبدو أحد الثديين مختلفًا عما سبق. سجّلي وقت ملاحظتك للتغير.', 'Skin changes': 'تغيرات الجلد', 'Dimpling, redness, or other unusual changes that do not go away.': 'تغضّن أو احمرار أو تغير غير معتاد لا يزول.', 'Nipple changes': 'تغيرات الحلمة', 'A newly inverted nipple or other unusual change.': 'انكماش حديث للحلمة أو أي تغير غير معتاد آخر.', 'Unusual discharge': 'إفرازات غير معتادة', 'Especially if bloody. Do not ignore discharge that is new or unexplained.': 'خصوصًا إذا كانت دموية. لا تتجاهلي الإفرازات الجديدة أو غير المفسرة.', 'Do not wait for pain.': 'لا تنتظري حتى تشعري بالألم.', 'A new or persistent change should be assessed by a healthcare professional.': 'ينبغي أن يقيّم مختص صحي أي تغير جديد أو مستمر.',
+          '03 Early detection': '٠٣ الكشف المبكر', 'Know what to do.': 'اعرفي ما ينبغي فعله.', 'Four steps that make it a habit.': 'أربع خطوات لتصبح عادة.', 'Know your body': 'تعرّفي على جسمك', 'Notice new changes. This does not replace screening.': 'انتبهي للتغيرات الجديدة. هذا لا يغني عن الفحوصات.', 'Understand screening': 'افهمي الفحوصات', 'Mammography is for people without symptoms. Ages follow local guidelines. [ADD ALGERIAN GUIDELINE]': 'يُجرى تصوير الثدي بالأشعة لمن لا تظهر لديهم أعراض. تُحدَّد الأعمار وفق الإرشادات المحلية. [أضيفوا الإرشادات الجزائرية]', 'Act on changes': 'تصرّفي عند حدوث تغيرات', 'A concerning change needs assessment, even below screening age.': 'يحتاج التغير المقلق إلى تقييم حتى قبل سن الفحص الدوري.', 'Prepare': 'استعدّي', 'Note the change, when it started, other symptoms, and your questions.': 'دوّني التغير ووقت بدايته والأعراض الأخرى وأسئلتك.',
+          'Test yourself': 'اختبري معلوماتك', 'Six questions to lock it in.': 'ستة أسئلة لترسيخ المعلومات.', 'Support and resources': 'الدعم والموارد', 'You do not have to face it alone.': 'لستِ مضطرة لمواجهة ذلك وحدك.', 'Breast cancer fact sheet': 'صحيفة وقائع عن سرطان الثدي', 'Local support in Algeria': 'الدعم المحلي في الجزائر', '[VERIFIED ORGANISATION, HOSPITAL OR HELPLINE]': '[اسم جهة أو مستشفى أو رقم مساعدة بعد التحقق]', '[CAMPAIGN ORGANISER] | Reviewed by [REVIEWER]. General information only; it does not replace professional medical advice.': '[منظّم الحملة] | راجعه [المراجع]. معلومات عامة فقط ولا تغني عن المشورة الطبية المتخصصة.',
+          'Next page': 'الصفحة التالية', 'Pages': 'الصفحات', 'Go to page': 'انتقلي إلى الصفحة', 'Awareness quiz': 'اختبار التوعية', 'Breast Cancer Awareness': 'التوعية بسرطان الثدي', 'Switch to dark theme': 'التبديل إلى المظهر الداكن', 'Switch to light theme': 'التبديل إلى المظهر الفاتح'
+        }
+      }, themeToggle = D.getElementById('themeToggle'), fullQuiz = D.getElementById('full');
+      function t(value) {return (translations[language] && translations[language][value]) || value}
+      function applyLanguage() {
+        language = D.querySelector('.lang[aria-pressed="true"]').dataset.lang;
+        D.documentElement.lang = language; B.dir = language === 'ar' ? 'rtl' : 'ltr';
+        var walker = D.createTreeWalker(D.body, NodeFilter.SHOW_TEXT), node;
+        while ((node = walker.nextNode())) {if (node.parentElement.closest('script,style,[data-h]')) continue; if (!node.__english) node.__english = node.nodeValue; var original = node.__english, trimmed = original.trim(); node.nodeValue = original.replace(trimmed, t(trimmed))}
+        P.forEach(function (p) {p.dataset.t = p.dataset.englishTitle || p.dataset.t; if (!p.dataset.englishTitle) p.dataset.englishTitle = p.dataset.t; p.dataset.t = t(p.dataset.englishTitle)});
+        D.querySelectorAll('[data-h]').forEach(function (e) {if (!e.__h) {e.__h = e.innerHTML; e.__x = e.textContent.trim()} var r = t(e.__x); if (r === e.__x) e.innerHTML = e.__h; else e.textContent = r});
+        D.querySelectorAll('#dots button').forEach(function (button, i) {button.setAttribute('aria-label', t('Go to page') + ' ' + (i + 1) + ': ' + P[i].dataset.t)});
+        D.querySelectorAll('.hero svg[aria-label]').forEach(function (svg) {svg.setAttribute('aria-label', t('Breast cancer awareness'))});
+        D.getElementById('dots').setAttribute('aria-label', t('Pages'));
+        nx.setAttribute('aria-label', t('Next page'));
+        var dark = D.documentElement.dataset.theme === 'dark', themeLabel = dark ? 'Switch to light theme' : 'Switch to dark theme';
+        themeToggle.setAttribute('aria-label', t(themeLabel)); themeToggle.title = t(themeLabel);
+        document.title = t('Breast Cancer Awareness');
+        fullQuiz.innerHTML = ''; quiz(fullQuiz, Q, t('Awareness quiz'));
+      }
+      themeToggle.onclick = function () {var dark = D.documentElement.dataset.theme !== 'dark'; if (dark) D.documentElement.dataset.theme = 'dark'; else delete D.documentElement.dataset.theme; themeToggle.textContent = dark ? '☀' : '☾'; themeToggle.setAttribute('aria-label', t(dark ? 'Switch to light theme' : 'Switch to dark theme')); themeToggle.title = t(dark ? 'Switch to light theme' : 'Switch to dark theme')};
+      D.querySelectorAll('.lang').forEach(function (button) {button.onclick = function () {D.querySelectorAll('.lang').forEach(function (b) {b.setAttribute('aria-pressed', String(b === button))}); applyLanguage()}});
+      /* quiz */
+      var Q = [
+        {q: {en: 'Does every breast lump mean cancer?', fr: 'Toute masse mammaire signifie-t-elle un cancer ?', ar: 'هل تعني كل كتلة في الثدي وجود سرطان؟'}, o: {en: ['Yes, always', 'No, many are benign, but any new lump should be assessed'], fr: ['Oui, toujours', 'Non, beaucoup sont bénignes, mais toute nouvelle masse doit être évaluée'], ar: ['نعم، دائمًا', 'لا، كثير منها حميد، لكن يجب تقييم أي كتلة جديدة']}, a: 1, e: {en: 'Many lumps are benign, but only a healthcare professional can tell.', fr: 'De nombreuses masses sont bénignes, mais seul un professionnel de santé peut le déterminer.', ar: 'كثير من الكتل حميد، لكن المختص الصحي وحده يستطيع تحديد ذلك.'}},
+        {q: {en: 'Can men develop breast cancer?', fr: 'Les hommes peuvent-ils avoir un cancer du sein ?', ar: 'هل يمكن أن يُصاب الرجال بسرطان الثدي؟'}, o: {en: ['No, never', 'Yes, although it is much less common'], fr: ['Non, jamais', 'Oui, même si c’est beaucoup moins fréquent'], ar: ['لا، أبدًا', 'نعم، لكنه أقل شيوعًا بكثير']}, a: 1, e: {en: 'Anyone can develop it. It is far more common in women.', fr: 'Tout le monde peut être concerné. Il est beaucoup plus fréquent chez les femmes.', ar: 'قد يصيب أي شخص، لكنه أكثر شيوعًا لدى النساء.'}},
+        {q: {en: 'You notice a breast change but feel no pain. What should you do?', fr: 'Vous remarquez un changement au sein sans douleur. Que faire ?', ar: 'لاحظتِ تغيرًا في الثدي دون ألم. ماذا ينبغي أن تفعلي؟'}, o: {en: ['Wait until it hurts', 'Seek advice from a healthcare professional'], fr: ['Attendre d’avoir mal', 'Demander conseil à un professionnel de santé'], ar: ['انتظري حتى تشعري بالألم', 'اطلبي المشورة من مختص صحي']}, a: 1, e: {en: 'Do not wait for pain. A new or persistent change should be assessed.', fr: 'N’attendez pas d’avoir mal. Tout changement nouveau ou persistant doit être évalué.', ar: 'لا تنتظري الألم. ينبغي تقييم أي تغير جديد أو مستمر.'}},
+        {q: {en: 'Screening mammography is mainly intended for people who...', fr: 'La mammographie de dépistage s’adresse principalement aux personnes qui…', ar: 'يهدف تصوير الثدي بالأشعة للفحص الدوري أساسًا إلى الأشخاص الذين…'}, o: {en: ['Already have symptoms', 'Have no symptoms'], fr: ['Ont déjà des symptômes', 'N’ont pas de symptômes'], ar: ['لديهم أعراض بالفعل', 'ليس لديهم أعراض']}, a: 1, e: {en: 'Screening looks for cancer before symptoms appear. A new change needs assessment at any age.', fr: 'Le dépistage recherche un cancer avant l’apparition de symptômes. Tout nouveau changement doit être évalué à tout âge.', ar: 'يبحث الفحص عن السرطان قبل ظهور الأعراض. ويجب تقييم أي تغير جديد في أي عمر.'}},
+        {q: {en: 'Does a family history mean you will develop breast cancer?', fr: 'Les antécédents familiaux signifient-ils que vous aurez un cancer du sein ?', ar: 'هل يعني التاريخ العائلي أنك ستصابين بسرطان الثدي؟'}, o: {en: ['Yes, it is certain', 'No, it raises risk but is not a certainty'], fr: ['Oui, c’est certain', 'Non, cela augmente le risque sans certitude'], ar: ['نعم، هذا مؤكد', 'لا، فهو يزيد الخطر لكنه لا يجعله أمرًا مؤكدًا']}, a: 1, e: {en: 'Family history is a risk factor, not a diagnosis.', fr: 'Les antécédents familiaux sont un facteur de risque, pas un diagnostic.', ar: 'التاريخ العائلي عامل خطر وليس تشخيصًا.'}},
+        {q: {en: 'Can every case of breast cancer be prevented?', fr: 'Peut-on prévenir tous les cas de cancer du sein ?', ar: 'هل يمكن الوقاية من جميع حالات سرطان الثدي؟'}, o: {en: ['Yes, with the right lifestyle', 'No, some risk factors cannot be changed'], fr: ['Oui, avec un mode de vie adapté', 'Non, certains facteurs de risque ne peuvent pas être modifiés'], ar: ['نعم، باتباع نمط الحياة المناسب', 'لا، لا يمكن تغيير بعض عوامل الخطر']}, a: 1, e: {en: 'Age and inherited genetic variants cannot be changed.', fr: 'L’âge et les variants génétiques héréditaires ne peuvent pas être modifiés.', ar: 'لا يمكن تغيير العمر والتغيرات الجينية الموروثة.'}}];
+      function quiz(el, items, label) {
+        var i = 0, sc = 0, multi = items.length > 1;
+        function head(r) {return '<div class="qt"><span>' + label + '</span><span>' + r + '</span></div>'}
+        function show() {
+          var it = items[i];
+          el.innerHTML = head(multi ? (i + 1) + ' / ' + items.length : '') + '<h3></h3><div class="os"></div><div aria-live="polite" class="fbk"></div>' + (multi ? '<div class="dts">' + items.map(function (_, k) {return '<i class="' + (k < i ? 'd' : '') + '"></i>'}).join('') + '</div>' : '');
+          el.querySelector('h3').textContent = it.q[language];
+          var os = el.querySelector('.os'), fb = el.querySelector('.fbk');
+          it.o[language].forEach(function (text, k) {
+            var b = D.createElement('button'); b.className = 'opt'; b.textContent = text; b.onclick = function () {
+              os.querySelectorAll('.opt').forEach(function (x, j) {x.disabled = true; if (j === it.a) x.classList.add('ok')});
+              var good = k === it.a; if (good) sc++; else b.classList.add('no');
+              var messages = {en: [good ? 'Correct. ' : 'Not quite. ', it.e.en], fr: [good ? 'Correct. ' : 'Pas tout à fait. ', it.e.fr], ar: [good ? 'إجابة صحيحة. ' : 'ليس تمامًا. ', it.e.ar]};
+              fb.innerHTML = '<p class="fb"><strong>' + messages[language][0] + '</strong></p>'; fb.firstChild.append(messages[language][1]);
+              if (multi || !good) {var n = D.createElement('button'); n.className = 'qbtn'; n.textContent = i < items.length - 1 ? (language === 'fr' ? 'Question suivante' : language === 'ar' ? 'السؤال التالي' : 'Next question') : (multi ? (language === 'fr' ? 'Voir mon score' : language === 'ar' ? 'عرض نتيجتي' : 'See my score') : (language === 'fr' ? 'Réessayer' : language === 'ar' ? 'حاولي مجددًا' : 'Try again')); n.onclick = function () {i++; if (i < items.length) show(); else end()}; fb.appendChild(n)}
+            }; os.appendChild(b)
+          })
+        }
+        function end() {
+          var result = language === 'fr' ? [sc === items.length ? 'Parfait. Partagez ce que vous avez appris avec un proche.' : sc >= 4 ? 'Bravo ! Réessayez pour obtenir le score parfait.' : 'Bon début. Relisez les informations et réessayez.', 'Terminé', 'Réessayer'] : language === 'ar' ? [sc === items.length ? 'ممتاز! شاركي ما تعلمته مع شخص تهتمين به.' : sc >= 4 ? 'أحسنتِ! حاولي مجددًا لتحصلي على الدرجة الكاملة.' : 'بداية جيدة. راجعي المعلومات وحاولي مجددًا.', 'اكتمل', 'حاولي مجددًا'] : [sc === items.length ? 'Perfect. Share what you learned with someone you care about.' : sc >= 4 ? 'Well done. Try again to perfect it.' : 'A good start. Swipe back, review, and try again.', 'Complete', 'Try again'];
+          el.innerHTML = head(result[1]) + '<div class="score">' + sc + ' / ' + items.length + '</div><p>' + result[0] + '</p><button class="qbtn">' + result[2] + '</button>';
+          el.querySelector('.qbtn').onclick = function () {i = 0; sc = 0; show()}
+        }
+        show()
+      }
+      /* Keep the quiz at the end and localize page content. */
+      applyLanguage();
+    })();
+  </script>
 </body>
+
 </html>
