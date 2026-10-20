@@ -2,4 +2,4 @@
 
 demo : https://sou1lah.github.io/Breast-cancer-Awearness-Page/
 
-![extended.svg|250](extended.svg)
+<img src="extended.svg" width="250">
