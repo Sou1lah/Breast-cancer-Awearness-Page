@@ -93,13 +93,13 @@
     }
 
     .pg {
-      height: 100vh;
-      height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
       scroll-snap-align: start;
       scroll-snap-stop: always;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
+      overflow: visible;
       padding: calc(var(--si-t) + var(--hh) + 16px) 22px calc(var(--si-b) + 84px);
       background: var(--bg)
     }
@@ -1228,7 +1228,7 @@
           </svg></div>
         <div class="eyebrow a">Breast cancer awareness</div>
         <h1 class="a">Awareness is the first step.</h1>
-        <p class="a">Know the signs, understand screening, and talk to a professional about any change. Swipe up to
+        <p class="a" data-h>Know the signs, understand screening, and talk to a professional about any change. Swipe up to
           learn, with quick quizzes along the way.</p>
       </div>
     </section>
@@ -1507,7 +1507,7 @@
       function setCur(i) {cur = i; pb.style.width = ((i + 1) / N * 100) + '%';[].forEach.call(dots.children, function (d, k) {d.classList.toggle('on', k === i)}); nx.classList.toggle('hide', i === N - 1)}
       setCur(0);
       /* active page tracking: replay entrance animation */
-      var io = new IntersectionObserver(function (es) {es.forEach(function (e) {var i = P.indexOf(e.target); if (e.isIntersecting) {setCur(i); if (!ready) return; e.target.classList.add('act'); var n = e.target.querySelectorAll('[data-to]'); if (!reduce) n.forEach(count)} else {e.target.classList.remove('act')} })}, {root: S, threshold: .55});
+      var io = new IntersectionObserver(function (es) {es.forEach(function (e) {var i = P.indexOf(e.target); if (e.isIntersecting) {setCur(i); if (!ready) return; e.target.classList.add('act'); var n = e.target.querySelectorAll('[data-to]'); if (!reduce) n.forEach(count)} else {e.target.classList.remove('act')} })}, {root: S, threshold: 0, rootMargin: '-45% 0px -45% 0px'});
       P.forEach(function (p) {io.observe(p)});
       function count(n) {var to = +n.dataset.to, s = null; function f(ts) {s = s || ts; var p = Math.min((ts - s) / 1300, 1); n.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString('en-US'); if (p < 1) requestAnimationFrame(f)} requestAnimationFrame(f)}
       /* intro */
@@ -1540,13 +1540,94 @@
         }
       }, themeToggle = D.getElementById('themeToggle'), fullQuiz = D.getElementById('full');
       function t(value) {return (translations[language] && translations[language][value]) || value}
+      var highlights = {
+        fr: {
+          'Earlier action is linked to better outcomes.': ['meilleurs résultats'],
+          'Breast cancer is 41.3% of all cancers in Algerian women (14,601 new cases in 2022): the most common.': ['41,3 %', '14 601', 'le cancer le plus fréquent'],
+          'Found early, breast cancer is more treatable, with more options.': ['détecté tôt', 'se traite mieux'],
+          'Abnormal cells in breast tissue grow out of control.': ['de façon incontrôlée'],
+          'Anyone, including men, although it is far more common in women.': ['Tout le monde', 'les hommes', 'fréquent chez les femmes'],
+          'Age, family history and inherited genes help guide when to start checks. Knowing them lets you plan ahead.': ['L’âge', 'les antécédents familiaux', 'les prédispositions génétiques héréditaires', 'anticiper'],
+          'Yes, often it can. Staying active, keeping a healthy weight and limiting alcohol all help.': ['Oui, souvent.', 'activité physique', 'poids sain', 'limitation de l’alcool'],
+          'In the breast or armpit. Many lumps are benign, but only a professional can tell.': ['bénignes', 'seul un professionnel peut le déterminer'],
+          'One breast looks different from before. Note when you first saw it.': ['différent', 'Notez quand'],
+          'Dimpling, redness, or other unusual changes that do not go away.': ['Creux', 'rougeur', 'persiste'],
+          'A newly inverted nipple or other unusual change.': ['récemment rétracté'],
+          'Especially if bloody. Do not ignore discharge that is new or unexplained.': ['sanglant', 'N’ignorez pas'],
+          'Do not wait for pain. A new or persistent change should be assessed by a healthcare professional.': ['N’attendez pas d’avoir mal.'],
+          'Notice new changes. This does not replace screening.': ['nouveau changement'],
+          'Mammography is for people without symptoms. Ages follow local guidelines. [ADD ALGERIAN GUIDELINE]': ['mammographie', 'sans symptômes', 'recommandations locales'],
+          'A concerning change needs assessment, even below screening age.': ['évalué'],
+          'Note the change, when it started, other symptoms, and your questions.': ['son apparition']
+        },
+        ar: {
+          'Earlier action is linked to better outcomes.': ['نتائج أفضل'],
+          'Breast cancer is 41.3% of all cancers in Algerian women (14,601 new cases in 2022): the most common.': ['41.3٪', '14,601', 'الأكثر شيوعًا'],
+          'Found early, breast cancer is more treatable, with more options.': ['مبكرًا', 'أكثر فاعلية'],
+          'Abnormal cells in breast tissue grow out of control.': ['بشكل خارج عن السيطرة'],
+          'Anyone, including men, although it is far more common in women.': ['أي شخص', 'الرجال', 'أكثر شيوعًا لدى النساء'],
+          'Age, family history and inherited genes help guide when to start checks. Knowing them lets you plan ahead.': ['العمر', 'التاريخ العائلي', 'الجينات الموروثة', 'التخطيط مسبقًا'],
+          'Yes, often it can. Staying active, keeping a healthy weight and limiting alcohol all help.': ['نعم، غالبًا يمكن ذلك.', 'النشاط البدني', 'وزن صحي', 'الحد من تناول الكحول'],
+          'In the breast or armpit. Many lumps are benign, but only a professional can tell.': ['حميد', 'المختص وحده يستطيع تحديد ذلك'],
+          'One breast looks different from before. Note when you first saw it.': ['مختلفًا', 'سجّلي وقت ملاحظتك للتغير'],
+          'Dimpling, redness, or other unusual changes that do not go away.': ['تغضّن', 'احمرار', 'لا يزول'],
+          'A newly inverted nipple or other unusual change.': ['انكماش حديث'],
+          'Especially if bloody. Do not ignore discharge that is new or unexplained.': ['دموية', 'لا تتجاهلي'],
+          'Do not wait for pain. A new or persistent change should be assessed by a healthcare professional.': ['لا تنتظري الألم.'],
+          'Notice new changes. This does not replace screening.': ['للتغيرات الجديدة'],
+          'Mammography is for people without symptoms. Ages follow local guidelines. [ADD ALGERIAN GUIDELINE]': ['تصوير الثدي بالأشعة', 'لا تظهر لديهم أعراض', 'الإرشادات المحلية'],
+          'A concerning change needs assessment, even below screening age.': ['تقييم'],
+          'Note the change, when it started, other symptoms, and your questions.': ['وقت بدايته']
+        }
+      };
+      function renderHighlighted(element, value, fragments) {
+        var remaining = value, fragment = D.createDocumentFragment();
+        while (remaining) {
+          var match = null, index = remaining.length;
+          (fragments || []).forEach(function (text) {
+            var at = remaining.indexOf(text);
+            if (at !== -1 && at < index) {match = text; index = at}
+          });
+          if (!match) {fragment.appendChild(D.createTextNode(remaining)); break}
+          if (index) fragment.appendChild(D.createTextNode(remaining.slice(0, index)));
+          var strong = D.createElement('b'); strong.className = 'hl'; strong.textContent = match; fragment.appendChild(strong);
+          remaining = remaining.slice(index + match.length);
+        }
+        element.textContent = ''; element.appendChild(fragment);
+      }
+      Object.assign(translations.fr, {
+        'Pink October': 'Octobre rose', 'The good news': 'La bonne nouvelle', 'Know your risk factors': 'Connaître vos facteurs de risque', '2,300,000': '2 300 000', '41%': '41 %', '99': '99', '1': '1',
+        'El Amel (CPMC), Algiers': 'El Amel (CPMC), Alger', 'Algerian patient-support association: awareness, mobile screening and guidance.': 'Association algérienne de soutien aux patients : sensibilisation, dépistage mobile et accompagnement.',
+        'Profile': 'Profil', 'Facebook': 'Facebook', 'Instagram': 'Instagram', 'Website': 'Site web', 'GLOBOCAN 2022, Algeria fact sheet': 'GLOBOCAN 2022, fiche d’information sur l’Algérie',
+        'Source:': 'Source :', 'World Health Organization': 'Organisation mondiale de la Santé', 'Trusted facts on breast cancer.': 'Des informations fiables sur le cancer du sein.',
+        'Global cancer-control community with breast cancer resources.': 'Communauté mondiale de lutte contre le cancer proposant des ressources sur le cancer du sein.',
+        'Research behind the cancer statistics.': 'La recherche à l’origine des statistiques sur le cancer.', 'IARC': 'CIRC', 'UICC': 'UICC', 'GPnotebook': 'GPnotebook',
+        'Age, family history and inherited genes help guide when to start checks. Knowing them lets you plan ahead.': 'L’âge, les antécédents familiaux et les prédispositions génétiques héréditaires aident à déterminer quand commencer les contrôles. Les connaître permet d’anticiper.',
+        'Breast cancer is 41.3% of all cancers in Algerian women (14,601 new cases in 2022): the most common.': 'Le cancer du sein représente 41,3 % de tous les cancers chez les femmes en Algérie (14 601 nouveaux cas en 2022) : c’est le cancer le plus fréquent.',
+        'Do not wait for pain. A new or persistent change should be assessed by a healthcare professional.': 'N’attendez pas d’avoir mal. Tout changement nouveau ou persistant doit être évalué par un professionnel de santé.',
+        'Found early, breast cancer is more treatable, with more options.': 'Lorsqu’il est détecté tôt, le cancer du sein se traite mieux et offre davantage d’options.',
+        'Yes, often it can. Staying active, keeping a healthy weight and limiting alcohol all help.': 'Oui, souvent. L’activité physique, le maintien d’un poids sain et la limitation de l’alcool peuvent aider.'
+      });
+      Object.assign(translations.ar, {
+        'Pink October': 'أكتوبر الوردي', 'The good news': 'الخبر الجيد', 'Know your risk factors': 'اعرفي عوامل الخطر', '2,300,000': '٢٬٣٠٠٬٠٠٠', '41%': '٤١٪', '99': '٩٩', '1': '١',
+        'El Amel (CPMC), Algiers': 'جمعية الأمل (CPMC)، الجزائر العاصمة', 'Algerian patient-support association: awareness, mobile screening and guidance.': 'جمعية جزائرية لدعم المرضى: التوعية والفحص المتنقل والإرشاد.',
+        'Profile': 'الملف التعريفي', 'Facebook': 'فيسبوك', 'Instagram': 'إنستغرام', 'Website': 'الموقع الإلكتروني', 'GLOBOCAN 2022, Algeria fact sheet': 'المرصد العالمي للسرطان 2022، صحيفة بيانات الجزائر',
+        'Source:': 'المصدر:', 'World Health Organization': 'منظمة الصحة العالمية', 'Trusted facts on breast cancer.': 'معلومات موثوقة عن سرطان الثدي.',
+        'Global cancer-control community with breast cancer resources.': 'مجتمع عالمي لمكافحة السرطان يوفّر موارد عن سرطان الثدي.',
+        'Research behind the cancer statistics.': 'الأبحاث التي تستند إليها إحصاءات السرطان.', 'IARC': 'الوكالة الدولية لبحوث السرطان', 'UICC': 'الاتحاد الدولي لمكافحة السرطان', 'GPnotebook': 'GPnotebook',
+        'Age, family history and inherited genes help guide when to start checks. Knowing them lets you plan ahead.': 'يساعد العمر والتاريخ العائلي والجينات الموروثة في تحديد موعد بدء الفحوصات. ومعرفتها تساعد على التخطيط مسبقًا.',
+        'Breast cancer is 41.3% of all cancers in Algerian women (14,601 new cases in 2022): the most common.': 'يمثل سرطان الثدي 41.3٪ من جميع أنواع السرطان لدى النساء في الجزائر (14,601 حالة جديدة في عام 2022)، وهو الأكثر شيوعًا.',
+        'Do not wait for pain. A new or persistent change should be assessed by a healthcare professional.': 'لا تنتظري الألم. ينبغي أن يقيّم مختص صحي أي تغير جديد أو مستمر.',
+        'Found early, breast cancer is more treatable, with more options.': 'عند اكتشاف سرطان الثدي مبكرًا، يصبح علاجه أكثر فاعلية وتتوفر خيارات أكثر.',
+        'Yes, often it can. Staying active, keeping a healthy weight and limiting alcohol all help.': 'نعم، غالبًا يمكن ذلك. يساعد النشاط البدني والحفاظ على وزن صحي والحد من تناول الكحول.'
+      });
       function applyLanguage() {
         language = D.querySelector('.lang[aria-pressed="true"]').dataset.lang;
         D.documentElement.lang = language; B.dir = language === 'ar' ? 'rtl' : 'ltr';
         var walker = D.createTreeWalker(D.body, NodeFilter.SHOW_TEXT), node;
         while ((node = walker.nextNode())) {if (node.parentElement.closest('script,style,[data-h]')) continue; if (!node.__english) node.__english = node.nodeValue; var original = node.__english, trimmed = original.trim(); node.nodeValue = original.replace(trimmed, t(trimmed))}
         P.forEach(function (p) {p.dataset.t = p.dataset.englishTitle || p.dataset.t; if (!p.dataset.englishTitle) p.dataset.englishTitle = p.dataset.t; p.dataset.t = t(p.dataset.englishTitle)});
-        D.querySelectorAll('[data-h]').forEach(function (e) {if (!e.__h) {e.__h = e.innerHTML; e.__x = e.textContent.trim()} var r = t(e.__x); if (r === e.__x) e.innerHTML = e.__h; else e.textContent = r});
+        D.querySelectorAll('[data-h]').forEach(function (e) {if (!e.__h) {e.__h = e.innerHTML; e.__x = e.textContent.replace(/\s+/g, ' ').trim()} var r = t(e.__x); if (r === e.__x) e.innerHTML = e.__h; else renderHighlighted(e, r, highlights[language][e.__x])});
         D.querySelectorAll('#dots button').forEach(function (button, i) {button.setAttribute('aria-label', t('Go to page') + ' ' + (i + 1) + ': ' + P[i].dataset.t)});
         D.querySelectorAll('.hero svg[aria-label]').forEach(function (svg) {svg.setAttribute('aria-label', t('Breast cancer awareness'))});
         D.getElementById('dots').setAttribute('aria-label', t('Pages'));
